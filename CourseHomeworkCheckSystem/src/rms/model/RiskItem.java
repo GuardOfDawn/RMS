@@ -4,10 +4,13 @@ import java.util.List;
 
 import rms.common.EffectLevel;
 import rms.common.Possibility;
+import rms.common.RiskState;
 
 public class RiskItem {
 	
 	private String riskId;
+	
+	private String description;
 	
 	private Possibility possibility;
 	
@@ -19,6 +22,8 @@ public class RiskItem {
 	
 	private String followerId;
 	
+	private RiskState state;
+	
 	private List<StateItem> list;
 
 	public String getRiskId() {
@@ -27,6 +32,15 @@ public class RiskItem {
 
 	public void setRiskId(String riskId) {
 		this.riskId = riskId;
+	}
+	
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Possibility getPossibility() {
@@ -75,6 +89,14 @@ public class RiskItem {
 
 	public void setList(List<StateItem> list) {
 		this.list = list;
+	}
+
+	public RiskState getState() {
+		return state;
+	}
+
+	public void setState(RiskState state) {
+		this.state = state;
 	}
 
 }
