@@ -1,6 +1,6 @@
 node {
  stage('SCM') {
- git 'https://github.com/Darkera524/Demo.git'
+ git 'https://github.com/GuardOfDawn/RMS.git'
  }
  stage('QA'){
 
