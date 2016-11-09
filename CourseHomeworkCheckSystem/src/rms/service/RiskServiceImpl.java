@@ -44,4 +44,10 @@ public class RiskServiceImpl implements RiskService{
 		return result;
 	}
 
+	@Override
+	public List<RiskItem> retrieveAllRisks() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

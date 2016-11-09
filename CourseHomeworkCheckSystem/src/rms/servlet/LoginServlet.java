@@ -1,6 +1,7 @@
-package edu.nju.courseHomeworkCheck.servlets;
+package rms.servlet;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -9,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import edu.nju.courseHomeworkCheck.factory.DaoFactory;
+import rms.common.Role;
+import rms.service.UserService;
+import rms.service.UserServiceImpl;
 
 /**
  * Servlet implementation class LoginServlet
@@ -17,13 +20,14 @@ import edu.nju.courseHomeworkCheck.factory.DaoFactory;
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private UserService userService = new UserServiceImpl();
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public LoginServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -65,14 +69,14 @@ public class LoginServlet extends HttpServlet {
 				}
 
 				// create a session to show that we are logged in
-				boolean loginRes = DaoFactory.getStudentDao()
-						.checkLogin(loginValue,request.getParameter("password"));
-				if(loginRes){
+				Role role = userService.login(loginValue, request.getParameter("password"));
+				if(role!=Role.Failure){
 					session = request.getSession(true);
 					session.setMaxInactiveInterval(5*60);
 					session.setAttribute("userid", loginValue);
+					session.setAttribute("userType", String.valueOf(role));
 					
-					response.sendRedirect(request.getContextPath() + "/WorkNoticeServlet");
+					response.sendRedirect(request.getContextPath() + "/RiskViewServlet");
 				}
 				else{
 					response.sendRedirect(request.getContextPath() + "/jsp/loginError.jsp");

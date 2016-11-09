@@ -1,12 +1,13 @@
 package rms.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import rms.common.EffectLevel;
 import rms.common.Possibility;
 import rms.common.RiskState;
 
-public class RiskItem {
+public class RiskItem implements Serializable{
 	
 	private String riskId;
 	

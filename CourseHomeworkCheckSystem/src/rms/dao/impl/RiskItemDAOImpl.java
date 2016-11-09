@@ -34,7 +34,7 @@ public class RiskItemDAOImpl implements RiskItemDAO{
 		String followerID = riskItem.getFollowerId();
 		int state = riskItem.getState() == RiskState.Removed?1:0;
 		List<StateItem> list = riskItem.getList();
-		String sql1 = "insert into riskitem ('"+riskID+"','"
+		String sql1 = "insert into riskitem values ('"+riskID+"','"
 				+description+"',"+possibility+","+effectLevel+",'"
 				+trigger+"','"+committerID+"','"+followerID+"',"+state+");";
 		boolean state1 = execute(sql1);
@@ -77,7 +77,7 @@ public class RiskItemDAOImpl implements RiskItemDAO{
 
 	@Override
 	public List<RiskItem> findAll(String userID) {
-		String sql = "select rid,description,possibility,effect,trigger,committerid,followerid,state from riskitem where committerID='"+userID+"';";
+		String sql = "select rid,description,possibility,effectlevel,`trigger`,committerid,followerid,state from riskitem where committerID='"+userID+"';";
 		Connection connection = daoHelper.getConnection();
 		List<RiskItem> list = new ArrayList<RiskItem>();
 		Statement statement = null;

@@ -1,10 +1,11 @@
 package rms.model;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 import rms.common.RiskState;
 
-public class StateItem {
+public class StateItem implements Serializable{
 
 	private String stateId;
 	

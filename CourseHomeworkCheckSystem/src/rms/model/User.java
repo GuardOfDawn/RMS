@@ -1,8 +1,10 @@
 package rms.model;
 
+import java.io.Serializable;
+
 import rms.common.Role;
 
-public class User {
+public class User implements Serializable{
 	
 	private String userID;
 	

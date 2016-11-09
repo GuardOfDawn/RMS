@@ -12,6 +12,8 @@ public interface RiskService {
 	
 	public boolean modifyRisk(RiskItem item);
 	
+	public List<RiskItem> retrieveAllRisks();
+	
 	public List<RiskItem> retrieveRisks(String userId);
 	
 	public RiskItem getRiskInfo(String riskId);
