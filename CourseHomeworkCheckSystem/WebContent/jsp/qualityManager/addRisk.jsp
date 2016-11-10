@@ -16,7 +16,7 @@
 	      <nav>
 	        <ul class="lavaLampWithImage" id="lava_menu">
           	  <li><a>您好，<%=session.getAttribute("userTypeInChinese")%>,<%=session.getAttribute("userid")%></a></li>
-	          <li><a href="<%=path%>/Dessert/userlogout">登出</a></li>
+	          <li><a href="<%=path%>/LogoutServlet">登出</a></li>
 	        </ul>
 	      </nav>
 	    </header>
@@ -71,14 +71,12 @@
 	  			pageContext.setAttribute("riskItem",risk);
 	  		%>
 	  		  <h2 align="center">添加风险成功</h2>
-	  		  <div class="form_settings" style="margin-left:150px">
-		  		  <p><span>风险编号:<jsp:getProperty name="riskItem" property="riskId" /></span></p>
-		  		  <p><span>可能性:<jsp:getProperty name="riskItem" property="possibility" /></span></p>
-		  		  <p><span>影响程度:<jsp:getProperty name="riskItem" property="effect" /></span></p>
-		  		  <p><span>触发器:<jsp:getProperty name="riskItem" property="trigger" /></span></p>
-		  		  <p><span>风险内容:</span><textarea rows="6" cols="50" readonly name="name" ><jsp:getProperty name="riskItem" property="description" /></textarea></p>
-			  </div>
-			<%} %>
+	  		  <p><span>风险编号:<jsp:getProperty name="riskItem" property="riskId" /></span></p>
+	  		  <p><span>可能性:<jsp:getProperty name="riskItem" property="possibility" /></span></p>
+	  		  <p><span>影响程度:<jsp:getProperty name="riskItem" property="effect" /></span></p>
+	  		  <p><span>触发器:<jsp:getProperty name="riskItem" property="trigger" /></span></p>
+	  		  <p><span>风险内容:</span><textarea rows="6" cols="50" readonly name="name" ><jsp:getProperty name="riskItem" property="description" /></textarea></p>
+			 <%} %>
 		  </div>
 		</div>
 	</div>

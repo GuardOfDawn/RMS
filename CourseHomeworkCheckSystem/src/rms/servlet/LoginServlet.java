@@ -79,7 +79,8 @@ public class LoginServlet extends HttpServlet {
 					response.sendRedirect(request.getContextPath() + "/RiskViewServlet");
 				}
 				else{
-					response.sendRedirect(request.getContextPath() + "/jsp/loginError.jsp");
+					request.setAttribute("loginError", "loginError");
+					response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
 				}
 				
 			} else {

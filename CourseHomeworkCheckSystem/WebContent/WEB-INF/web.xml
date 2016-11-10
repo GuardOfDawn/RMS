@@ -4,14 +4,4 @@
   <description>
 		A application for test.
 	</description>
-  <servlet>
-    <description></description>
-    <display-name>LogoutServlet</display-name>
-    <servlet-name>LogoutServlet</servlet-name>
-    <servlet-class>rms.servlet.LogoutServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>LogoutServlet</servlet-name>
-    <url-pattern>/LogoutServlet</url-pattern>
-  </servlet-mapping>
 </web-app>

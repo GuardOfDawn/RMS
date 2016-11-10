@@ -4,12 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Login error Page</title>
+<title>Insert title here</title>
 </head>
-<body bgcolor='#FFFACD'>
-	<p>登录出错!</p>
-	<form method='GET' action='<%=request.getContextPath() + "/jsp/login.jsp"%>'>
-		<input type='submit' name='return' value='重新登录'/>
-	</form>
+<body>
+
 </body>
 </html>

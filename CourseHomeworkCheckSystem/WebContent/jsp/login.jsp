@@ -19,6 +19,11 @@
 					<p style="padding-top: 15px"><span>&nbsp;</span>
 						<input class="submit" type="submit" name="login" value="登录"/>
 					</p>
+					<p>
+						<%if("loginError".equals(request.getAttribute("loginError"))){ %>
+						用户名密码错误，登录失败！
+						<%} %>
+					</p>
 				</div>
 			</form>
 		</div>

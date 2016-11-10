@@ -98,6 +98,13 @@ public class UserDAOImpl implements UserDAO{
 		} catch (SQLException e) {
 			return null;
 		}
+		try {
+			if(resultSet.getRow()==0){
+				return null;
+			}
+		} catch (SQLException e1) {
+			return null;
+		}
 		User user = new User();
 		int role = 2;
 		try {

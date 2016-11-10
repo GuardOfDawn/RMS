@@ -18,6 +18,9 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public Role login(String uid, String password) {
 		User userInfo = this.userDao.find(uid);
+		if(userInfo==null){
+			return Role.Failure;
+		}
 		boolean state = userInfo.getPassword().equals(password);
 		if(!state){
 			return Role.Failure;

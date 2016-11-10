@@ -1,7 +1,6 @@
 package rms.servlet;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -11,17 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import rms.common.Role;
 import rms.model.RiskItem;
 import rms.service.RiskService;
 import rms.service.RiskServiceImpl;
 import rms.servlet.business.RiskListBean;
 
 /**
- * Servlet implementation class RiskViewServlet
+ * Servlet implementation class FollowRiskServlet
  */
-@WebServlet("/RiskViewServlet")
-public class RiskViewServlet extends HttpServlet {
+@WebServlet("/FollowRiskServlet")
+public class FollowRiskServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private RiskService riskService = new RiskServiceImpl();
@@ -29,7 +27,7 @@ public class RiskViewServlet extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RiskViewServlet() {
+    public FollowRiskServlet() {
         super();
     }
 
@@ -42,32 +40,33 @@ public class RiskViewServlet extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
 		}
 		else{
-			String roleString = String.valueOf(session.getAttribute("userType"));
 			String userId = String.valueOf(session.getAttribute("userid"));
-			if(roleString.equals("null")||userId.equals("null")){
+			if(userId.equals("null")){
 				session = null;
 				response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
 			}
 			else{
 				ServletContext context = getServletContext();
-				Role role = Role.valueOf(roleString);
-				
-				List<RiskItem> ristList = riskService.retrieveRisks(userId);
-				RiskListBean riskListBean = new RiskListBean();
-				riskListBean.setRiskList(ristList,userId);
-				session.setAttribute("riskList", riskListBean);
-				
-				if(Role.QualityManager==role){
-					session.setAttribute("userTypeInChinese", "质量管理员");
-					context.getRequestDispatcher("/jsp/qualityManager/riskViewForQm.jsp").forward(request, response);
+				RiskListBean riskList = (RiskListBean) session.getAttribute("riskList");
+				String riskId = request.getParameter("riskIdFollow");
+				for(int i=0;i<riskList.getSize();i++){
+					if(riskList.getRisk(i).getRiskId().equals(riskId)){
+						RiskItem item = riskList.getRisk(i);
+						String followerId = item.getFollowerId();
+						if(followerId.equals("null")){
+							followerId = userId;
+						}
+						else{
+							followerId.concat(",").concat(userId);
+						}
+						item.setFollowerId(followerId);
+						riskList.setFollowCondition(i, 1);
+						riskService.modifyRisk(item);
+						break;
+					}
 				}
-				else if(Role.SoftwareEngineer==role){
-					session.setAttribute("userTypeInChinese", "软件工程师");
-					context.getRequestDispatcher("/jsp/qualityManager/riskViewForQm.jsp").forward(request, response);
-				}
-				else{
-					
-				}
+				session.setAttribute("riskList", riskList);
+				context.getRequestDispatcher("/jsp/qualityManager/riskViewForQm.jsp").forward(request, response);
 			}
 		}
 	}
