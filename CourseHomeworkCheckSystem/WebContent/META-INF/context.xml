@@ -2,6 +2,6 @@
 <Context>
   <Resource name="jdbc/rms" auth="Container" type="javax.sql.DataSource"
                maxActive="50" maxIdle="30" maxWait="10000" logAbandoned="true" 
-               username="root" password="87281898" driverClassName="com.mysql.jdbc.Driver"
+               username="dake" password="123456" driverClassName="com.mysql.jdbc.Driver"
                url="jdbc:mysql://localhost:3306/rms?autoReconnect=true"/>
 </Context>

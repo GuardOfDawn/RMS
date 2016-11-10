@@ -89,7 +89,7 @@ public class LoginServlet extends HttpServlet {
 			
 		}
 		else{
-			response.sendRedirect(request.getContextPath() + "/WorkNoticeServlet");
+			response.sendRedirect(request.getContextPath() + "/RiskViewServlet");
 		}
 	}
 

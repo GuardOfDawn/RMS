@@ -120,7 +120,7 @@ public class RiskItemDAOImpl implements RiskItemDAO{
 				result.setCommiterId(resultSet.getString(6));
 				result.setFollowerId(resultSet.getString(7));
 				result.setState(resultSet.getInt(8)==0?RiskState.UnRemoved:RiskState.Removed);
-				result.setList(this.findStateItem(result.getRiskId()));
+				//result.setList(this.findStateItem(result.getRiskId()));
 				list.add(result);
 			}
 		} catch (SQLException e) {
@@ -172,7 +172,7 @@ public class RiskItemDAOImpl implements RiskItemDAO{
 			result.setCommiterId(resultSet.getString(6));
 			result.setFollowerId(resultSet.getString(7));
 			result.setState(resultSet.getInt(8)==0?RiskState.UnRemoved:RiskState.Removed);
-			result.setList(this.findStateItem(riskID));
+			//result.setList(this.findStateItem(riskID));
 			return result;
 		} catch (SQLException e) {
 			daoHelper.closeConnection(connection);

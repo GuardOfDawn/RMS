@@ -25,9 +25,9 @@
       		<div class="sidebar">
 	  	      <ul>
 			    <br></br>
-			    <li><a href="<%=path%>/Dessert/storeview">查看风险</a></li>
+			    <li><a href="<%=path%>/RiskViewServlet">查看风险</a></li>
 				<br></br>
-				<li><a href="<%=path%>/jsp/systemManager/addStore.jsp">添加风险</a></li>
+				<li><a href="<%=path%>/jsp/qualityManager/addRisk.jsp">添加风险</a></li>
 	 	      </ul>
 			</div>
    	  	  </div>
@@ -59,17 +59,25 @@
 	            <p><span>触发器</span><input type="text" name="trigger" value="" /></p>
 	            <p><span>风险内容</span><textarea rows="6" cols="50" name="description"></textarea></p>
 	            <p style="padding-top: 15px"><span>&nbsp;</span><input class="submit" type="submit" name="ensure" value="确认添加"/></p>
+	            <%
+	            if("false".equals(String.valueOf(request.getAttribute("addRes")))){
+	            %>
+	            <p>风险添加失败，请重新添加</p>
+	            <%} %>
 	          </div>
 	        </form>
 	        <%}
 	  		else{
+	  			pageContext.setAttribute("riskItem",risk);
 	  		%>
 	  		  <h2 align="center">添加风险成功</h2>
-	  		  <p><span>风险编号:<jsp:getProperty name="riskItem" property="riskId" /></span></p>
-	  		  <p><span>可能性:<jsp:getProperty name="riskItem" property="possibility" /></span></p>
-	  		  <p><span>影响程度:<jsp:getProperty name="riskItem" property="effect" /></span></p>
-	  		  <p><span>触发器:<jsp:getProperty name="riskItem" property="trigger" /></span></p>
-	  		  <p><span>风险内容:</span><textarea rows="6" cols="50" readonly name="name" ><jsp:getProperty name="riskItem" property="description" /></textarea></p>
+	  		  <div class="form_settings" style="margin-left:150px">
+		  		  <p><span>风险编号:<jsp:getProperty name="riskItem" property="riskId" /></span></p>
+		  		  <p><span>可能性:<jsp:getProperty name="riskItem" property="possibility" /></span></p>
+		  		  <p><span>影响程度:<jsp:getProperty name="riskItem" property="effect" /></span></p>
+		  		  <p><span>触发器:<jsp:getProperty name="riskItem" property="trigger" /></span></p>
+		  		  <p><span>风险内容:</span><textarea rows="6" cols="50" readonly name="name" ><jsp:getProperty name="riskItem" property="description" /></textarea></p>
+			  </div>
 			<%} %>
 		  </div>
 		</div>
