@@ -7,6 +7,7 @@
 	<% String path = request.getContextPath();%>
 	<title>risk overview for quality manager</title>
 	<link rel="stylesheet" type="text/css" href="<%=path%>/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="<%=path %>/css/lightbox.css" />
   	<script type="text/javascript" src="<%=path%>/js/modernizr-1.5.min.js"></script>
 </head>
 <body>
@@ -68,11 +69,11 @@
 		      <%} %>
 		      <td>
 		      	<input class="submit" type="button" name="deleteRisk" value="删除"
-					 onclick=""/>
+					 onclick="deleteRiskRow('<jsp:getProperty name="riskItem" property="riskId" />')"/>
 		      </td>
 		      <td>
 		      	<input class="submit" type="button" name="modifyRisk" value="修改"
-					 onclick=""/>
+					 onclick="modifyRiskRow('<jsp:getProperty name="riskItem" property="riskId" />')"/>
 		      </td>
 		    </tr>
 		  	<%} %>
@@ -80,6 +81,18 @@
 		  </div>
 		</div>
 	</div>
+	
+	<div id="lightDeleteRisk" class="delete_content" >
+      	  <p></p>
+      	  <div align="center">
+      	    <p><input id="deleteRiskId" type="text" value="" width="30px" readonly="readonly"/></p>
+      	    <h2>您确认删除这条风险吗？</h2>
+      	  </div>
+      	  <div class="form_settings" style="margin-left:-30px;margin-top:20px">
+            <input class="submit" type="button" value="取消" onclick="cancelDeleteRisk()"/>
+            <input class="submit" type="button" value="确认删除" onclick="ensureDeleteRisk()"/>
+          </div>
+      </div>
 	
 </body>
 <script type="text/javascript" src="<%=path%>/js/jquery.min.js"></script>
@@ -101,5 +114,24 @@
 	function followRiskRow(riskId){
 		window.location.href='<%=path%>/FollowRiskServlet?riskIdFollow='+riskId
 	}
+	function deleteRiskRow(riskId){
+		document.getElementById("lightDeleteRisk").style.display='block';
+		document.getElementById("deleteRiskId").value=riskId;
+	}
+	function cancelDeleteRisk(){
+		document.getElementById("deleteRiskId").value='';
+		document.getElementById("lightDeleteRisk").style.display='none';
+    }
+    function ensureDeleteRisk(){
+    	var riskToDelete = document.getElementById("deleteRiskId").value;
+		document.getElementById("deleteRiskId").value='';
+		document.getElementById("lightDeleteRisk").style.display='none';
+		window.location.href='<%=path%>/RiskDeleteServlet?riskToDelete='+riskToDelete;
+	
+    }
+	function modifyRiskRow(riskId){
+		window.location.href='<%=path%>/jsp/qualityManager/modifyRisk.jsp?riskIdModify='+riskId;
+	}
+	
 </script>
 </html>
