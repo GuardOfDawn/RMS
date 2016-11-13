@@ -59,7 +59,9 @@ public class RiskAddServlet extends HttpServlet {
 				risk.setState(RiskState.UnRemoved);
 				boolean res = riskService.addRisk(risk);
 				request.setAttribute("addRes", res);
-				request.setAttribute("riskItem", risk);
+				if(res==true){
+					request.setAttribute("riskItem", risk);
+				}
 				ServletContext context = getServletContext();
 				context.getRequestDispatcher("/jsp/qualityManager/addRisk.jsp").forward(request, response);
 			}

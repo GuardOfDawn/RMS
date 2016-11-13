@@ -61,7 +61,8 @@ public class RiskDeleteServlet extends HttpServlet {
 						newList.add(riskList.getRisk(i));
 					}
 				}
-				session.setAttribute("riskList", newList);
+				riskList.setRiskList(newList, userId);
+				session.setAttribute("riskList", riskList);
 				
 				context.getRequestDispatcher("/jsp/qualityManager/riskViewForQm.jsp").forward(request, response);
 			}

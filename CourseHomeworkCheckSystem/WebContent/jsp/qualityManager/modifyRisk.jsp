@@ -42,14 +42,17 @@
 				class="rms.model.RiskItem"
 				scope="page"></jsp:useBean>
 			
-			<%	String riskId = request.getParameter("riskIdModify");
-	   	 		for(int i=0;i<riskList.getSize();i++){
-	   	 			riskItem = riskList.getRisk(i);
-	   	 			if(riskItem.getRiskId().equals(riskId)){
-		    			pageContext.setAttribute("riskItem",riskItem);
-		    			break;
-	   	 			}
-	   	 		}
+			<%	RiskItem risk = (RiskItem) request.getAttribute("riskItem");
+				String value = String.valueOf(request.getAttribute("modifyRes"));
+				if(value.equals("null")||value.equals("false")){
+					String riskId = request.getParameter("riskIdModify");
+		   	 		for(int i=0;i<riskList.getSize();i++){
+		   	 			riskItem = riskList.getRisk(i);
+		   	 			if(riskItem.getRiskId().equals(riskId)){
+			    			pageContext.setAttribute("riskItem",riskItem);
+			    			break;
+		   	 			}
+		   	 		}
 	  		%>
 		    <h2 align="center">修改风险</h2>
 	        <form action="<%=path%>/RiskModifyServlet" method="post">
@@ -112,7 +115,22 @@
 	            <p><span>风险内容</span><textarea rows="6" cols="50" name="description" ><jsp:getProperty name="riskItem" property="description" /></textarea></p>
 	            <p style="padding-top: 15px"><span>&nbsp;</span><input class="submit" type="submit" name="ensure" value="确认修改"/></p>
 	          </div>
+	          <%if(value.equals("false")){ %>
+	          <p><span>风险修改失败</span></p>
+	          <%} %>
 	        </form>
+	        <%  }
+				else{
+					pageContext.setAttribute("riskItem",risk);
+				%>
+				<h2 align="center">修改风险成功</h2>
+	  		  	<p><span>风险编号:<jsp:getProperty name="riskItem" property="riskId" /></span></p>
+	  		  	<p><span>可能性:<jsp:getProperty name="riskItem" property="possibility" /></span></p>
+	  		  	<p><span>影响程度:<jsp:getProperty name="riskItem" property="effect" /></span></p>
+	  		  	<p><span>触发器:<jsp:getProperty name="riskItem" property="trigger" /></span></p>
+	  		  	<p><span>风险状态:<jsp:getProperty name="riskItem" property="state" /></span></p>
+	  		  	<p><span>风险内容:</span><textarea rows="6" cols="50" readonly name="name" ><jsp:getProperty name="riskItem" property="description" /></textarea></p>
+				<%} %>
 		  </div>
 		</div>
 	</div>
