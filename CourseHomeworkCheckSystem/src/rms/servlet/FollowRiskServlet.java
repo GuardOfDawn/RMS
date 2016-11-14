@@ -57,7 +57,7 @@ public class FollowRiskServlet extends HttpServlet {
 							followerId = userId;
 						}
 						else{
-							followerId.concat(",").concat(userId);
+							followerId = followerId.concat(",").concat(userId);
 						}
 						item.setFollowerId(followerId);
 						riskList.setFollowCondition(i, 1);

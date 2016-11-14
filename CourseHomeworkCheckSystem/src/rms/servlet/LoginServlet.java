@@ -50,7 +50,7 @@ public class LoginServlet extends HttpServlet {
 			}
 		}
 		
-		if(session.getAttribute("userid")==null){
+		if(session!=null&&session.getAttribute("userid")==null){
 			String loginValue = request.getParameter("userid");
 			boolean isLoginAction = (null == loginValue) ? false : true;
 			if (isLoginAction) { // User is logging in

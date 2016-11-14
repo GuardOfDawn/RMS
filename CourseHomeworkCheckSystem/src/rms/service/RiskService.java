@@ -16,6 +16,8 @@ public interface RiskService {
 	
 	public List<RiskItem> retrieveRisks(String userId);
 	
+	public List<RiskItem> retrieveFollowedRisks(String userId);
+	
 	public RiskItem getRiskInfo(String riskId);
 	
 }

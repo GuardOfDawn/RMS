@@ -11,6 +11,7 @@ import java.util.List;
 
 import rms.common.EffectLevel;
 import rms.common.Possibility;
+import rms.common.RiskSearchType;
 import rms.common.RiskState;
 import rms.model.RiskItem;
 import rms.model.StateItem;
@@ -33,28 +34,31 @@ public class RiskItemDAOImpl implements RiskItemDAO{
 		String committerID = riskItem.getCommiterId();
 		String followerID = riskItem.getFollowerId();
 		int state = riskItem.getState() == RiskState.Removed?1:0;
-		List<StateItem> list = riskItem.getList();
 		String sql1 = "insert into riskitem values ('"+riskID+"','"
 				+description+"',"+possibility+","+effectLevel+",'"
 				+trigger+"','"+committerID+"','"+followerID+"',"+state+");";
 		boolean state1 = execute(sql1);
-		if(!state1)
-			return false;
-		for(StateItem item:list){
-			String sql2 = "insert into stateitem ('";
-			String stateID = item.getStateId();
-			String rid = item.getRiskId();
-			int state0 = item.getState() == RiskState.Removed?1:0;
-			String description0 = item.getDescription();
-			Calendar start = item.getStart();
-			Calendar end = item.getEnd();
-			String startTime = transfer(start);
-			String endTime = transfer(end);
-			long sub = end.getTimeInMillis() - start.getTimeInMillis();
-			sql2 = sql2 + stateID + "','" + rid + "'," + state0 + ",'" + description0
-					+ "','" + description + "','" + startTime 
-					+ "','" + endTime + "'," + sub +";";
-			execute(sql2);
+		List<StateItem> list = riskItem.getList();
+		if(list==null){
+			
+		}
+		else{
+			for(StateItem item:list){
+				String sql2 = "insert into stateitem ('";
+				String stateID = item.getStateId();
+				String rid = item.getRiskId();
+				int state0 = item.getState() == RiskState.Removed?1:0;
+				String description0 = item.getDescription();
+				Calendar start = item.getStart();
+				Calendar end = item.getEnd();
+				String startTime = transfer(start);
+				String endTime = transfer(end);
+				long sub = end.getTimeInMillis() - start.getTimeInMillis();
+				sql2 = sql2 + stateID + "','" + rid + "'," + state0 + ",'" + description0
+						+ "','" + description + "','" + startTime 
+						+ "','" + endTime + "'," + sub +";";
+				execute(sql2);
+			}
 		}
 		return true;
 	}
@@ -71,13 +75,54 @@ public class RiskItemDAOImpl implements RiskItemDAO{
 
 	@Override
 	public boolean modify(RiskItem riskItem) {
-		// TODO Auto-generated method stub
+		Connection connection = daoHelper.getConnection();
+		Statement statement = null;
+		try {
+			String description = riskItem.getDescription();
+			int possibility = transfer(riskItem.getPossibility());
+			int effectlevel = transfer(riskItem.getEffect());
+			String trigger = riskItem.getTrigger();
+			String followerid = riskItem.getFollowerId();
+			int state = transfer(riskItem.getState());
+			String sql = "update riskitem set description='"+description+"',"
+							+"possibility="+possibility+",effectlevel="+effectlevel+","
+							+"`trigger`='"+trigger+"',followerid='"+followerid+"',"
+							+"state="+state+" "
+							+"where rid='"+riskItem.getRiskId()+"';";
+			statement = connection.createStatement();
+			int res = statement.executeUpdate(sql);
+			if(res==1){
+				//TODO
+				daoHelper.closeConnection(connection);
+				return true;
+			}
+			else{
+				daoHelper.closeConnection(connection);
+				return false;
+			}
+		}catch (SQLException e) {
+			daoHelper.closeConnection(connection);
+		}
 		return false;
 	}
 
 	@Override
-	public List<RiskItem> findAll(String userID) {
-		String sql = "select rid,description,possibility,effectlevel,`trigger`,committerid,followerid,state from riskitem where committerID='"+userID+"';";
+	public List<RiskItem> findAll(String userID,RiskSearchType type) {
+		String sql;
+		switch(type){
+		case All:
+			sql = "select rid,description,possibility,effectlevel,`trigger`,committerid,followerid,state from riskitem;";
+			break;
+		case AllForOne:
+			sql = "select rid,description,possibility,effectlevel,`trigger`,committerid,followerid,state from riskitem where committerID='"+userID+"';";
+			break;
+		case FollowedForOne:
+			sql = "select rid,description,possibility,effectlevel,`trigger`,committerid,followerid,state from riskitem where find_in_set('"+userID+"',followerid);";
+			break;
+		default:
+			sql = "";
+			break;
+		}
 		Connection connection = daoHelper.getConnection();
 		List<RiskItem> list = new ArrayList<RiskItem>();
 		Statement statement = null;
@@ -120,12 +165,42 @@ public class RiskItemDAOImpl implements RiskItemDAO{
 				result.setCommiterId(resultSet.getString(6));
 				result.setFollowerId(resultSet.getString(7));
 				result.setState(resultSet.getInt(8)==0?RiskState.UnRemoved:RiskState.Removed);
-				//result.setList(this.findStateItem(result.getRiskId()));
+				
+				String sql2 = "select stateid,rid,state,description,start,end,time from stateitem where rid='"+result.getRiskId()+"';";
+				List<StateItem> list2 = new ArrayList<StateItem>();
+				Statement statement2 = null;
+				try {
+					statement2 = connection.createStatement();
+					ResultSet resultSet2 = statement2.executeQuery(sql2);
+					while(resultSet2.next()){
+						String stateID = resultSet.getString(1);
+						String rID = resultSet.getString(2);
+						RiskState state = resultSet.getInt(3)==0?RiskState.UnRemoved:RiskState.Removed;
+						String description = resultSet.getString(4);
+						Calendar start = transfer(resultSet.getString(5));
+						Calendar end = transfer(resultSet.getString(6));
+						Calendar time = transfer(resultSet.getInt(7));
+						StateItem item = new StateItem();
+						item.setStateId(stateID);
+						item.setRiskId(rID);
+						item.setState(state);
+						item.setDescription(description);
+						item.setStart(start);
+						item.setEnd(end);
+						item.setTime(time);
+						list2.add(item);
+					}
+					result.setList(list2);
+				} catch (SQLException e) {
+					this.daoHelper.closeConnection(connection);
+				}
+				
 				list.add(result);
 			}
 		} catch (SQLException e) {
 			daoHelper.closeConnection(connection);
 		}
+		daoHelper.closeConnection(connection);
 		return list;
 	}
 
@@ -172,7 +247,37 @@ public class RiskItemDAOImpl implements RiskItemDAO{
 			result.setCommiterId(resultSet.getString(6));
 			result.setFollowerId(resultSet.getString(7));
 			result.setState(resultSet.getInt(8)==0?RiskState.UnRemoved:RiskState.Removed);
-			//result.setList(this.findStateItem(riskID));
+
+			String sql2 = "select stateid,rid,state,description,start,end,time from stateitem where rid='"+riskID+"';";
+			List<StateItem> list = new ArrayList<StateItem>();
+			Statement statement2 = null;
+			try {
+				statement2 = connection.createStatement();
+				ResultSet resultSet2 = statement2.executeQuery(sql2);
+				while(resultSet2.next()){
+					String stateID = resultSet.getString(1);
+					String rID = resultSet.getString(2);
+					RiskState state = resultSet.getInt(3)==0?RiskState.UnRemoved:RiskState.Removed;
+					String description = resultSet.getString(4);
+					Calendar start = transfer(resultSet.getString(5));
+					Calendar end = transfer(resultSet.getString(6));
+					Calendar time = transfer(resultSet.getInt(7));
+					StateItem item = new StateItem();
+					item.setStateId(stateID);
+					item.setRiskId(rID);
+					item.setState(state);
+					item.setDescription(description);
+					item.setStart(start);
+					item.setEnd(end);
+					item.setTime(time);
+					list.add(item);
+				}
+				result.setList(list);
+			} catch (SQLException e) {
+				this.daoHelper.closeConnection(connection);
+			}
+
+			daoHelper.closeConnection(connection);
 			return result;
 		} catch (SQLException e) {
 			daoHelper.closeConnection(connection);
@@ -286,6 +391,22 @@ public class RiskItemDAOImpl implements RiskItemDAO{
 			effectLevel = 3;
 		}
 		return effectLevel;
+	}
+	
+	private int transfer(RiskState s){
+		int state;
+		switch(s){
+		case UnRemoved:
+			state = 0;
+			break;
+		case Removed:
+			state = 1;
+			break;
+		default:
+			state = 0;
+			break;
+		}
+		return state;
 	}
 	
 	private String transfer(Calendar calendar){

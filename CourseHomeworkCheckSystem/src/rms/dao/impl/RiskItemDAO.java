@@ -2,6 +2,7 @@ package rms.dao.impl;
 
 import java.util.List;
 
+import rms.common.RiskSearchType;
 import rms.model.RiskItem;
 import rms.model.StateItem;
 
@@ -13,7 +14,7 @@ public interface RiskItemDAO {
 	
 	public boolean modify(RiskItem riskItem);
 	
-	public List<RiskItem> findAll(String userID);
+	public List<RiskItem> findAll(String userID,RiskSearchType type);
 	
 	public RiskItem find(String riskID);
 	

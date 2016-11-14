@@ -1,6 +1,7 @@
 package rms.servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -10,20 +11,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import rms.common.EffectLevel;
-import rms.common.IdProducer;
-import rms.common.Possibility;
-import rms.common.RiskState;
 import rms.model.RiskItem;
-import rms.model.StateItem;
 import rms.service.RiskService;
 import rms.service.RiskServiceImpl;
+import rms.servlet.business.RiskListBean;
 
 /**
- * Servlet implementation class RiskAddServlet
+ * Servlet implementation class RiskFollowedViewServlet
  */
-@WebServlet("/RiskAddServlet")
-public class RiskAddServlet extends HttpServlet {
+@WebServlet("/RiskFollowedViewServlet")
+public class RiskFollowedViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private RiskService riskService = new RiskServiceImpl();
@@ -31,7 +28,7 @@ public class RiskAddServlet extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RiskAddServlet() {
+    public RiskFollowedViewServlet() {
         super();
     }
 
@@ -50,28 +47,12 @@ public class RiskAddServlet extends HttpServlet {
 				response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
 			}
 			else{
-				RiskItem risk = new RiskItem();
-				risk.setRiskId(IdProducer.produceRiskId());
-				risk.setPossibility(Possibility.values()[Integer.parseInt(request.getParameter("possibility"))]);
-				risk.setEffect(EffectLevel.values()[Integer.parseInt(request.getParameter("effectLevel"))]);
-				risk.setTrigger(request.getParameter("trigger"));
-				risk.setDescription(request.getParameter("description"));
-				risk.setCommiterId(userId);
-				risk.setState(RiskState.UnRemoved);
-				
-				StateItem stateItem = new StateItem();
-				stateItem.setStateId(IdProducer.produceStateId());
-				stateItem.setRiskId(risk.getRiskId());
-				stateItem.setState(RiskState.UnRemoved);
-				//TODO
-				
-				boolean res = riskService.addRisk(risk);
-				request.setAttribute("addRes", res);
-				if(res==true){
-					request.setAttribute("riskItem", risk);
-				}
 				ServletContext context = getServletContext();
-				context.getRequestDispatcher("/jsp/qualityManager/addRisk.jsp").forward(request, response);
+				List<RiskItem> ristList = riskService.retrieveFollowedRisks(userId);
+				RiskListBean riskListBean = new RiskListBean();
+				riskListBean.setRiskList(ristList,userId);
+				session.setAttribute("riskList", riskListBean);
+				context.getRequestDispatcher("/jsp/qualityManager/riskFollowedViewForQm.jsp").forward(request, response);
 			}
 		}
 	}

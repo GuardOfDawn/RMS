@@ -53,6 +53,8 @@ public class RiskModifyServlet extends HttpServlet {
 				risk.setPossibility(Possibility.values()[Integer.parseInt(request.getParameter("possibility"))]);
 				risk.setEffect(EffectLevel.values()[Integer.parseInt(request.getParameter("effectLevel"))]);
 				risk.setTrigger(request.getParameter("trigger"));
+				risk.setFollowerId(request.getParameter("commiterId"));
+				risk.setFollowerId(request.getParameter("followerId"));
 				risk.setState(RiskState.values()[Integer.parseInt(request.getParameter("state"))]);
 				risk.setDescription(request.getParameter("description"));
 				boolean res = riskService.modifyRisk(risk);

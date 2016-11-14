@@ -2,6 +2,7 @@ package rms.service;
 
 import java.util.List;
 
+import rms.common.RiskSearchType;
 import rms.dao.impl.RiskItemDAO;
 import rms.dao.impl.RiskItemDAOImpl;
 import rms.model.RiskItem;
@@ -34,7 +35,7 @@ public class RiskServiceImpl implements RiskService{
 
 	@Override
 	public List<RiskItem> retrieveRisks(String userId) {
-		List<RiskItem> result = this.dao.findAll(userId);
+		List<RiskItem> result = this.dao.findAll(userId,RiskSearchType.AllForOne);
 		return result;
 	}
 
@@ -45,9 +46,14 @@ public class RiskServiceImpl implements RiskService{
 	}
 
 	@Override
+	public List<RiskItem> retrieveFollowedRisks(String userId) {
+		List<RiskItem> result = this.dao.findAll(userId,RiskSearchType.FollowedForOne);
+		return result;
+	}
+
+	@Override
 	public List<RiskItem> retrieveAllRisks() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.dao.findAll("",RiskSearchType.All);
 	}
 
 }

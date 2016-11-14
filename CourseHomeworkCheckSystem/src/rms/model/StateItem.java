@@ -7,6 +7,11 @@ import rms.common.RiskState;
 
 public class StateItem implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private String stateId;
 	
 	private String riskId;

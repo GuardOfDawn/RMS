@@ -5,13 +5,13 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<% String path = request.getContextPath();%>
-	<title>risk overview for quality manager</title>
+	<title>risk followed for quality manager</title>
 	<link rel="stylesheet" type="text/css" href="<%=path%>/css/style.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/css/lightbox.css" />
   	<script type="text/javascript" src="<%=path%>/js/modernizr-1.5.min.js"></script>
 </head>
 <body>
-	<jsp:useBean id="riskList"
+<jsp:useBean id="riskList"
 			type="rms.servlet.business.RiskListBean"
 			scope="session"></jsp:useBean>
 	<jsp:useBean id="riskItem"

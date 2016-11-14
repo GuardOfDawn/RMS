@@ -52,18 +52,21 @@ public class RiskViewServlet extends HttpServlet {
 				ServletContext context = getServletContext();
 				Role role = Role.valueOf(roleString);
 				
-				List<RiskItem> ristList = riskService.retrieveRisks(userId);
-				RiskListBean riskListBean = new RiskListBean();
-				riskListBean.setRiskList(ristList,userId);
-				session.setAttribute("riskList", riskListBean);
-				
 				if(Role.QualityManager==role){
+					List<RiskItem> ristList = riskService.retrieveAllRisks();
+					RiskListBean riskListBean = new RiskListBean();
+					riskListBean.setRiskList(ristList,userId);
+					session.setAttribute("riskList", riskListBean);
 					session.setAttribute("userTypeInChinese", "质量管理员");
 					context.getRequestDispatcher("/jsp/qualityManager/riskViewForQm.jsp").forward(request, response);
 				}
 				else if(Role.SoftwareEngineer==role){
+					List<RiskItem> ristList = riskService.retrieveRisks(userId);
+					RiskListBean riskListBean = new RiskListBean();
+					riskListBean.setRiskList(ristList,userId);
+					session.setAttribute("riskList", riskListBean);
 					session.setAttribute("userTypeInChinese", "软件工程师");
-					context.getRequestDispatcher("/jsp/qualityManager/riskViewForQm.jsp").forward(request, response);
+					context.getRequestDispatcher("/jsp/softwareEngineer/riskViewForSE.jsp").forward(request, response);
 				}
 				else{
 					

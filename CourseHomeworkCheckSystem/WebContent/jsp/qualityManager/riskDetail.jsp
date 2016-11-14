@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@page import="rms.common.Possibility"%>
+    <%@page import="rms.common.EffectLevel"%>
+    <%@page import="rms.common.RiskState"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -31,6 +34,8 @@
 	  	      <ul>
 			    <br></br>
 			    <li><a href="<%=path%>/RiskViewServlet">查看风险</a></li>
+			    <br></br>
+			    <li><a href="<%=path%>/RiskFollowedViewServlet">跟踪的风险</a></li>
 				<br></br>
 				<li><a href="<%=path%>/jsp/qualityManager/addRisk.jsp">添加风险</a></li>
 	 	      </ul>
@@ -46,14 +51,43 @@
    	 		}
    	  	%>
    	  	<div id="content">
-	  	  <h2 align="center">查看风险详细</h2>
-  		  <p><span>风险编号:<jsp:getProperty name="riskItem" property="riskId" /></span></p>
-  		  <p><span>可能性:<jsp:getProperty name="riskItem" property="possibility" /></span></p>
-  		  <p><span>影响程度:<jsp:getProperty name="riskItem" property="effect" /></span></p>
-  		  <p><span>触发器:<jsp:getProperty name="riskItem" property="trigger" /></span></p>
-  		  <p><span>提交者:<jsp:getProperty name="riskItem" property="commiterId" /></span></p>
-  		  <p><span>跟踪者:<jsp:getProperty name="riskItem" property="followerId" /></span></p>
-  		  <p><span>风险内容:</span><textarea rows="6" cols="50" readonly name="name" ><jsp:getProperty name="riskItem" property="description" /></textarea></p>
+		  <h2 align="center">查看风险详细</h2>
+   	  	  <form action="" method="post">
+	   	  	<div class="form_settings" style="margin-left:150px">
+	  		  <p><span>风险编号</span><input type="text" name="riskId" readonly="readonly" value="<jsp:getProperty name="riskItem" property="riskId" />" /></p>
+	  		    <%
+              	if(riskItem.getPossibility()==Possibility.High){ %>
+              <p><span>可能性</span><input type="text" name="riskId" readonly="readonly" value="高" /></p>
+            	<%}
+              	else if(riskItem.getPossibility()==Possibility.Medium){%>
+              <p><span>可能性</span><input type="text" name="riskId" readonly="readonly" value="中" /></p>
+	  		    <%}
+              	else{%>
+              <p><span>可能性</span><input type="text" name="riskId" readonly="readonly" value="低" /></p>
+	  		    <%} %>
+	  		     <%
+              	if(riskItem.getEffect()==EffectLevel.High){ %>
+              <p><span>影响程度</span><input type="text" name="riskId" readonly="readonly" value="高" /></p>
+            	<%}
+              	else if(riskItem.getEffect()==EffectLevel.Medium){%>
+              <p><span>影响程度</span><input type="text" name="riskId" readonly="readonly" value="中" /></p>
+	  		    <%}
+              	else{%>
+              <p><span>影响程度</span><input type="text" name="riskId" readonly="readonly" value="低" /></p>
+	  		    <%} %>
+	  		  <p><span>触发器</span><input type="text" name="trigger" readonly="readonly" value="<jsp:getProperty name="riskItem" property="trigger" />" /></p>
+	          <p><span>提交者</span><input type="text" name="commiterId" readonly="readonly" value="<jsp:getProperty name="riskItem" property="commiterId" />" /></p>
+	          <p><span>跟踪者</span><input type="text" name="followerId" readonly="readonly" value="<jsp:getProperty name="riskItem" property="followerId" />" /></p>
+	          <%
+              	if(riskItem.getState()==RiskState.UnRemoved){ %>
+              <p><span>风险状态</span><input type="text" name="riskId" readonly="readonly" value="未排除" /></p>
+            	<%}
+              	else{%>
+              <p><span>风险状态</span><input type="text" name="riskId" readonly="readonly" value="已排除" /></p>
+	  		    <%} %>
+	          <p><span>风险内容:</span><textarea rows="6" cols="50" readonly name="name" ><jsp:getProperty name="riskItem" property="description" /></textarea></p>
+			 </div>
+			</form>
 		 </div>
    	 </div>
    </div>

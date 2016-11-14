@@ -29,6 +29,8 @@
 	  	      <ul>
 			    <br></br>
 			    <li><a href="<%=path%>/RiskViewServlet">查看风险</a></li>
+			    <br></br>
+			    <li><a href="<%=path%>/RiskFollowedViewServlet">跟踪的风险</a></li>
 				<br></br>
 				<li><a href="<%=path%>/jsp/qualityManager/addRisk.jsp">添加风险</a></li>
 	 	      </ul>
@@ -99,6 +101,8 @@
 	              </select>
 	            </p>
 	            <p><span>触发器</span><input type="text" name="trigger" value="<jsp:getProperty name="riskItem" property="trigger" />" /></p>
+	            <p><span>提交者</span><input type="text" name="commiterId" readonly="readonly" value="<jsp:getProperty name="riskItem" property="commiterId" />" /></p>
+	            <p><span>跟踪者</span><input type="text" name="followerId" readonly="readonly" value="<jsp:getProperty name="riskItem" property="followerId" />" /></p>
 	            <p><span>风险状态</span>
 	              <select id="id" name="state">
 	            	<%
