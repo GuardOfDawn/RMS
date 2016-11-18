@@ -14,8 +14,6 @@ public interface RiskService {
 	
 	public List<RiskItem> retrieveAllRisks();
 	
-	public List<RiskItem> retrieveRisks(String developterId);
-	
 	public RiskItem getRiskInfo(String riskId);
 	
 }
