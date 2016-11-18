@@ -73,5 +73,57 @@ public class StateItem implements Serializable{
 	public void setTime(Calendar time) {
 		this.time = time;
 	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getPossibility() {
+		return possibility;
+	}
+
+	public void setPossibility(String possibility) {
+		this.possibility = possibility;
+	}
+
+	public String getEffectlevel() {
+		return effectlevel;
+	}
+
+	public void setEffectlevel(String effectlevel) {
+		this.effectlevel = effectlevel;
+	}
+
+	public String getThreshold() {
+		return threshold;
+	}
+
+	public void setThreshold(String threshold) {
+		this.threshold = threshold;
+	}
+
+	public String getComitter() {
+		return comitter;
+	}
+
+	public void setComitter(String comitter) {
+		this.comitter = comitter;
+	}
+
+	public String getFollower() {
+		return follower;
+	}
+
+	public void setFollower(String follower) {
+		this.follower = follower;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	
 }

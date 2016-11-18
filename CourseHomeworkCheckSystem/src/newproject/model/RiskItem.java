@@ -28,4 +28,12 @@ public class RiskItem implements Serializable{
 		this.description = description;
 	}
 
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 }
