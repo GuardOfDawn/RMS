@@ -4,6 +4,6 @@ public enum Role {
 	
 	QualityManager,
 	SoftwareEngineer,
-	Failure
+	Manager
 
 }
