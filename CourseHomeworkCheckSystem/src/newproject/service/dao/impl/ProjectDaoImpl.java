@@ -30,7 +30,7 @@ public class ProjectDaoImpl implements ProjectDao{
 		String sql1 = "delete from project where pid='"+pid+"';";
 		boolean flag = this.db.executeCUD(sql1);
 		String sql2 = "delete from belongto where pid='"+pid+"';";
-		flag = flag & this.db.executeCUD(sql2);
+		flag = flag && this.db.executeCUD(sql2);
 		return flag;
 	}
 

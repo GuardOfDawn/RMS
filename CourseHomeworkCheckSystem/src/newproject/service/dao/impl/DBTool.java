@@ -6,6 +6,8 @@ import java.sql.*;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import com.sun.istack.internal.logging.Logger;
+
 public class DBTool {
 	private DaoHelper daoHelper;
 	public DBTool(){
@@ -56,6 +58,7 @@ public class DBTool {
 		try {
 			resultSet = statement.executeQuery(sql);
 		} catch (SQLException e) {
+			e.printStackTrace();
 		} finally {
 			this.daoHelper.closeConnection(connection);
 		}

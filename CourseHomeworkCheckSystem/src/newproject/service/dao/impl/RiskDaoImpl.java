@@ -29,7 +29,7 @@ public class RiskDaoImpl implements RiskDao{
 		String sql1 = "delete from risk where rid='"+id+"';";
 		boolean flag = this.db.executeCUD(sql1);
 		String sql2 = "delete from riskstate where rid='"+id+"';";
-		flag = flag & this.db.executeCUD(sql2);
+		flag = flag && this.db.executeCUD(sql2);
 		return flag;
 	}
 
@@ -58,7 +58,7 @@ public class RiskDaoImpl implements RiskDao{
 			result.setTitle(resultSet.getString(2));
 			result.setDescription(resultSet.getString(3));
 		} catch (SQLException e) {
-			e.printStackTrace();
+			
 		}
 		return result;
 	}

@@ -31,7 +31,7 @@ public class UserDaoImpl implements UserDao{
 		String sql1 = "delete from user where uid='"+id+"';";
 		boolean flag = this.db.executeCUD(sql1);
 		String sql2 = "delete from `join` where uid='"+id+"';";
-		flag = flag & this.db.executeCUD(sql2);
+		flag = flag && this.db.executeCUD(sql2);
 		return flag;
 	}
 
