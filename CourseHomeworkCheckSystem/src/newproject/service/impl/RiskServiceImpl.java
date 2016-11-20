@@ -42,6 +42,7 @@ public class RiskServiceImpl implements RiskService{
 	@Override
 	public List<RiskItem> retrieveRisks(String developterId) {
 		List<RiskItem> list = this.riskDao.retrieveRisks(developterId);
+		int i=1;
 		return list;
 	}
 
