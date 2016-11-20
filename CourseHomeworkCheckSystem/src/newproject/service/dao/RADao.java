@@ -7,7 +7,7 @@ import newproject.model.RA;
 public interface RADao {
 	public boolean insert(RA ra);
 	
-	public boolean remove(RA ra);
+	public boolean remove(String raid);
 	
 	public boolean modify(RA ra);
 	
