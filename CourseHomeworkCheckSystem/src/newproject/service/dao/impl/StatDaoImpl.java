@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import rms.common.CountLimit;
 import rms.common.Role;
 import newproject.model.Project;
 import newproject.model.RiskCondition;
@@ -72,6 +73,7 @@ public class StatDaoImpl implements StatDao{
 		
 		RiskDaoImpl temp = new RiskDaoImpl();
 		Iterator<String> iter = map.keySet().iterator();
+		int count = 0;
 		while(iter.hasNext()){
 			String key = iter.next();
 			int value = map.get(key);
@@ -80,6 +82,8 @@ public class StatDaoImpl implements StatDao{
 			risk.setRisk(item);
 			risk.setProblemTransformedCount(value);
 			list.add(risk);
+			if((++count)>=CountLimit.COUNT)
+				break;
 		}
 		
 		return list;
@@ -131,6 +135,7 @@ public class StatDaoImpl implements StatDao{
 		
 		RiskDaoImpl temp = new RiskDaoImpl();
 		Iterator<String> iter = map.keySet().iterator();
+		int count = 0;
 		while(iter.hasNext()){
 			String key = iter.next();
 			int value = map.get(key);
@@ -139,6 +144,8 @@ public class StatDaoImpl implements StatDao{
 			risk.setRisk(item);
 			risk.setRecognizedCount(value);
 			list.add(risk);
+			if((++count)>=CountLimit.COUNT)
+				break;
 		}
 		
 		return list;
