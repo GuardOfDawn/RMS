@@ -39,4 +39,9 @@ public class StateItemServiceImpl implements StateItemService{
 		return list;
 	}
 
+	@Override
+	public List<StateItem> retrieveRisks(String developterId) {
+		return this.stateItemDao.retrieve(developterId);
+	}
+
 }
