@@ -11,24 +11,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import rms.model.RiskItem;
-import rms.service.RiskService;
-import rms.service.RiskServiceImpl;
-import rms.servlet.business.RiskListBean;
+import newproject.RAService;
+import newproject.model.RA;
+import newproject.service.impl.RAServiceImpl;
+import rms.servlet.business.RAListBean;
 
 /**
- * Servlet implementation class RiskFollowedViewServlet
+ * Servlet implementation class RAViewServlet
  */
-@WebServlet("/RiskFollowedViewServlet")
-public class RiskFollowedViewServlet extends HttpServlet {
+@WebServlet("/RAViewServlet")
+public class RAViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private RiskService riskService = new RiskServiceImpl();
+	private RAService raService = new RAServiceImpl();
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RiskFollowedViewServlet() {
+    public RAViewServlet() {
         super();
     }
 
@@ -41,18 +41,19 @@ public class RiskFollowedViewServlet extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
 		}
 		else{
-			String userId = String.valueOf(session.getAttribute("userid"));
+			String userId = String.valueOf(session.getAttribute("userId"));
 			if(userId.equals("null")){
 				session = null;
 				response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
 			}
 			else{
+				List<RA> raList = raService.retrieveRA(userId);
+				RAListBean raListBean = new RAListBean();
+				raListBean.setRaList(raList);
+				request.setAttribute("raList", raListBean);
+				
 				ServletContext context = getServletContext();
-				List<RiskItem> ristList = riskService.retrieveFollowedRisks(userId);
-				RiskListBean riskListBean = new RiskListBean();
-				riskListBean.setRiskList(ristList,userId);
-				session.setAttribute("riskList", riskListBean);
-				context.getRequestDispatcher("/jsp/qualityManager/riskFollowedViewForQm.jsp").forward(request, response);
+				context.getRequestDispatcher("/jsp/qualityManager/addRisk.jsp").forward(request, response);
 			}
 		}
 	}

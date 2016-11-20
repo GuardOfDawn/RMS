@@ -15,7 +15,7 @@
 			type="rms.servlet.business.RiskListBean"
 			scope="session"></jsp:useBean>
 	<jsp:useBean id="riskItem"
-			class="rms.model.RiskItem"
+			class="newproject.model.RiskItem"
 			scope="page"></jsp:useBean>
 	<div id="main">
 	  	<header>
@@ -45,7 +45,6 @@
 		    for(int i=0;i<riskList.getSize();i++){
 		    	pageContext.setAttribute("riskItem",riskList.getRisk(i));
 		    	request.setAttribute("number", number);
-		    	request.setAttribute("followCondition", riskList.isFollowed(i));
 		    	number++;
 			%>
 		    <tr>

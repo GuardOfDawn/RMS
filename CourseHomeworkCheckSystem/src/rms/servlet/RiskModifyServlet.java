@@ -10,12 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import rms.common.EffectLevel;
-import rms.common.Possibility;
-import rms.common.RiskState;
-import rms.model.RiskItem;
-import rms.service.RiskService;
-import rms.service.RiskServiceImpl;
+import newproject.RiskService;
+import newproject.model.RiskItem;
+import newproject.service.impl.RiskServiceImpl;
 
 /**
  * Servlet implementation class RiskModifyServlet
@@ -42,7 +39,7 @@ public class RiskModifyServlet extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
 		}
 		else{
-			String userId = String.valueOf(session.getAttribute("userid"));
+			String userId = String.valueOf(session.getAttribute("userId"));
 			if(userId.equals("null")){
 				session = null;
 				response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
@@ -50,12 +47,7 @@ public class RiskModifyServlet extends HttpServlet {
 			else{
 				RiskItem risk = new RiskItem();
 				risk.setRiskId(request.getParameter("riskId"));
-				risk.setPossibility(Possibility.values()[Integer.parseInt(request.getParameter("possibility"))]);
-				risk.setEffect(EffectLevel.values()[Integer.parseInt(request.getParameter("effectLevel"))]);
-				risk.setTrigger(request.getParameter("trigger"));
-				risk.setFollowerId(request.getParameter("commiterId"));
-				risk.setFollowerId(request.getParameter("followerId"));
-				risk.setState(RiskState.values()[Integer.parseInt(request.getParameter("state"))]);
+				risk.setTitle(request.getParameter("title"));
 				risk.setDescription(request.getParameter("description"));
 				boolean res = riskService.modifyRisk(risk);
 				request.setAttribute("modifyRes", res);

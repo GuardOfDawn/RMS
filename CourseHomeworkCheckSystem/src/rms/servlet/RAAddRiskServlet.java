@@ -10,24 +10,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import rms.model.RiskItem;
-import rms.service.RiskService;
-import rms.service.RiskServiceImpl;
-import rms.servlet.business.RiskListBean;
+import newproject.model.RA;
+import rms.common.IdProducer;
 
 /**
- * Servlet implementation class FollowRiskServlet
+ * Servlet implementation class RAAddRiskServlet
  */
-@WebServlet("/FollowRiskServlet")
-public class FollowRiskServlet extends HttpServlet {
+@WebServlet("/RAAddRiskServlet")
+public class RAAddRiskServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private RiskService riskService = new RiskServiceImpl();
-       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public FollowRiskServlet() {
+    public RAAddRiskServlet() {
         super();
     }
 
@@ -40,33 +36,22 @@ public class FollowRiskServlet extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
 		}
 		else{
-			String userId = String.valueOf(session.getAttribute("userid"));
+			String userId = String.valueOf(session.getAttribute("userId"));
 			if(userId.equals("null")){
 				session = null;
 				response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
 			}
 			else{
+				session.setAttribute("userId", userId);
+				RA newRA = new RA();
+				newRA.setRaId(IdProducer.produceRAId());
+				String temp = request.getParameter("selectProject");
+				newRA.setProjectId(temp.split(";")[0]);
+				newRA.setSetter(userId);
+				session.setAttribute("newRA", newRA);
+				
 				ServletContext context = getServletContext();
-				RiskListBean riskList = (RiskListBean) session.getAttribute("riskList");
-				String riskId = request.getParameter("riskIdFollow");
-				for(int i=0;i<riskList.getSize();i++){
-					if(riskList.getRisk(i).getRiskId().equals(riskId)){
-						RiskItem item = riskList.getRisk(i);
-						String followerId = item.getFollowerId();
-						if(followerId.equals("null")){
-							followerId = userId;
-						}
-						else{
-							followerId = followerId.concat(",").concat(userId);
-						}
-						item.setFollowerId(followerId);
-						riskList.setFollowCondition(i, 1);
-						riskService.modifyRisk(item);
-						break;
-					}
-				}
-				session.setAttribute("riskList", riskList);
-				context.getRequestDispatcher("/jsp/qualityManager/riskViewForQm.jsp").forward(request, response);
+				context.getRequestDispatcher("/jsp/qualityManager/raAddRisk.jsp").forward(request, response);
 			}
 		}
 	}

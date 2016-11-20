@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@page import="rms.model.RiskItem"%>
+    <%@page import="newproject.model.RiskItem"%>
     <%@page import="rms.common.Possibility"%>
     <%@page import="rms.common.EffectLevel"%>
     <%@page import="rms.common.RiskState"%>
@@ -41,7 +41,7 @@
 				type="rms.servlet.business.RiskListBean"
 				scope="session"></jsp:useBean>
 		  <jsp:useBean id="riskItem"
-				class="rms.model.RiskItem"
+				class="newproject.model.RiskItem"
 				scope="page"></jsp:useBean>
 			
 			<%	RiskItem risk = (RiskItem) request.getAttribute("riskItem");
@@ -60,62 +60,7 @@
 	        <form action="<%=path%>/RiskModifyServlet" method="post">
 	          <div class="form_settings" style="margin-left:150px">
 	            <p><span>风险编号</span><input type="text" name="riskId" readonly="readonly" value="<jsp:getProperty name="riskItem" property="riskId" />" /></p>
-	            <p><span>可能性</span>
-	              <select id="id" name="possibility">
-	              	<%
-	              	if(riskItem.getPossibility()==Possibility.High){ %>
-	            	<option value="0" selected="selected">高</option>
-	            	<option value="1">中</option>
-	            	<option value="2">低</option>
-	            	<%}
-	              	else if(riskItem.getPossibility()==Possibility.Medium){%>
-	            	<option value="0">高</option>
-	            	<option value="1" selected="selected">中</option>
-	            	<option value="2">低</option>
-	            	<%}
-	              	else{%>
-	            	<option value="0">高</option>
-	            	<option value="1">中</option>
-	            	<option value="2" selected="selected">低</option>
-	            	<%} %>
-	              </select>
-	            </p>
-            	<p><span>影响程度</span>
-	              <select id="id" name="effectLevel">
-	            	<%
-	              	if(riskItem.getEffect()==EffectLevel.High){ %>
-	            	<option value="0" selected="selected">高</option>
-	            	<option value="1">中</option>
-	            	<option value="2">低</option>
-	            	<%}
-	              	else if(riskItem.getEffect()==EffectLevel.Medium){%>
-	            	<option value="0">高</option>
-	            	<option value="1" selected="selected">中</option>
-	            	<option value="2">低</option>
-	            	<%}
-	              	else{%>
-	            	<option value="0">高</option>
-	            	<option value="1">中</option>
-	            	<option value="2" selected="selected">低</option>
-	            	<%} %>
-	              </select>
-	            </p>
-	            <p><span>触发器</span><input type="text" name="trigger" value="<jsp:getProperty name="riskItem" property="trigger" />" /></p>
-	            <p><span>提交者</span><input type="text" name="commiterId" readonly="readonly" value="<jsp:getProperty name="riskItem" property="commiterId" />" /></p>
-	            <p><span>跟踪者</span><input type="text" name="followerId" readonly="readonly" value="<jsp:getProperty name="riskItem" property="followerId" />" /></p>
-	            <p><span>风险状态</span>
-	              <select id="id" name="state">
-	            	<%
-	              	if(riskItem.getState()==RiskState.UnRemoved){ %>
-	            	<option value="0" selected="selected">未排除</option>
-	            	<option value="1">已排除</option>
-	            	<%}
-	              	else{%>
-	            	<option value="0">未排除</option>
-	            	<option value="1" selected="selected">已排除</option>
-	            	<%} %>
-	              </select>
-	            </p>
+	            <p><span>风险标题</span><input type="text" name="title" value="<jsp:getProperty name="riskItem" property="title" />" /></p>
 	            <p><span>风险内容</span><textarea rows="6" cols="50" name="description" ><jsp:getProperty name="riskItem" property="description" /></textarea></p>
 	            <p style="padding-top: 15px"><span>&nbsp;</span><input class="submit" type="submit" name="ensure" value="确认修改"/></p>
 	          </div>
@@ -129,10 +74,7 @@
 				%>
 				<h2 align="center">修改风险成功</h2>
 	  		  	<p><span>风险编号:<jsp:getProperty name="riskItem" property="riskId" /></span></p>
-	  		  	<p><span>可能性:<jsp:getProperty name="riskItem" property="possibility" /></span></p>
-	  		  	<p><span>影响程度:<jsp:getProperty name="riskItem" property="effect" /></span></p>
-	  		  	<p><span>触发器:<jsp:getProperty name="riskItem" property="trigger" /></span></p>
-	  		  	<p><span>风险状态:<jsp:getProperty name="riskItem" property="state" /></span></p>
+	  		  	<p><span>风险标题:<jsp:getProperty name="riskItem" property="title" /></span></p>
 	  		  	<p><span>风险内容:</span><textarea rows="6" cols="50" readonly name="name" ><jsp:getProperty name="riskItem" property="description" /></textarea></p>
 				<%} %>
 		  </div>

@@ -1,6 +1,7 @@
 package rms.servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -10,24 +11,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import newproject.RiskService;
-import newproject.model.RiskItem;
-import newproject.service.impl.RiskServiceImpl;
-import rms.common.IdProducer;
+import newproject.ProjectService;
+import newproject.model.Project;
+import newproject.service.impl.ProjectServiceImpl;
+import rms.servlet.business.ProjectListBean;
 
 /**
- * Servlet implementation class RiskAddServlet
+ * Servlet implementation class RAAddProjectServlet
  */
-@WebServlet("/RiskAddServlet")
-public class RiskAddServlet extends HttpServlet {
+@WebServlet("/RASelectProjectServlet")
+public class RASelectProjectServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private RiskService riskService = new RiskServiceImpl();
+	private ProjectService projectService = new ProjectServiceImpl();
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RiskAddServlet() {
+    public RASelectProjectServlet() {
         super();
     }
 
@@ -46,18 +47,13 @@ public class RiskAddServlet extends HttpServlet {
 				response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
 			}
 			else{
-				RiskItem risk = new RiskItem();
-				risk.setRiskId(IdProducer.produceRiskId());
-				risk.setTitle(request.getParameter("title"));
-				risk.setDescription(request.getParameter("description"));
+				List<Project> projectList = projectService.retrieveProjects();
+				ProjectListBean projectBean = new ProjectListBean();
+				projectBean.setProjectList(projectList);
+				request.setAttribute("projectList", projectBean);
 				
-				boolean res = riskService.addRisk(risk);
-				request.setAttribute("addRes", res);
-				if(res==true){
-					request.setAttribute("riskItem", risk);
-				}
 				ServletContext context = getServletContext();
-				context.getRequestDispatcher("/jsp/qualityManager/addRisk.jsp").forward(request, response);
+				context.getRequestDispatcher("/jsp/qualityManager/raAddProject.jsp").forward(request, response);
 			}
 		}
 	}

@@ -11,11 +11,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import newproject.RiskService;
+import newproject.StateItemService;
+import newproject.model.RiskItem;
+import newproject.model.StateItem;
+import newproject.model.User;
+import newproject.service.impl.RiskServiceImpl;
+import newproject.service.impl.StateItemServiceImpl;
 import rms.common.Role;
-import rms.model.RiskItem;
-import rms.service.RiskService;
-import rms.service.RiskServiceImpl;
 import rms.servlet.business.RiskListBean;
+import rms.servlet.business.StateItemBean;
 
 /**
  * Servlet implementation class RiskViewServlet
@@ -25,6 +30,7 @@ public class RiskViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private RiskService riskService = new RiskServiceImpl();
+	private StateItemService stateItemService = new StateItemServiceImpl();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -42,34 +48,36 @@ public class RiskViewServlet extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
 		}
 		else{
-			String roleString = String.valueOf(session.getAttribute("userType"));
-			String userId = String.valueOf(session.getAttribute("userid"));
-			if(roleString.equals("null")||userId.equals("null")){
+			String userId = String.valueOf(session.getAttribute("userId"));
+			User user = (User)session.getAttribute("user");
+			if(user==null){
 				session = null;
 				response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
 			}
 			else{
 				ServletContext context = getServletContext();
-				Role role = Role.valueOf(roleString);
+				Role role = user.getRole();
 				
 				if(Role.QualityManager==role){
 					List<RiskItem> ristList = riskService.retrieveAllRisks();
 					RiskListBean riskListBean = new RiskListBean();
-					riskListBean.setRiskList(ristList,userId);
+					riskListBean.setRiskList(ristList);
 					session.setAttribute("riskList", riskListBean);
 					session.setAttribute("userTypeInChinese", "质量管理员");
 					context.getRequestDispatcher("/jsp/qualityManager/riskViewForQm.jsp").forward(request, response);
 				}
 				else if(Role.SoftwareEngineer==role){
-					List<RiskItem> ristList = riskService.retrieveRisks(userId);
-					RiskListBean riskListBean = new RiskListBean();
-					riskListBean.setRiskList(ristList,userId);
+					List<StateItem> ristList = stateItemService.retrieveRisks(userId);
+					StateItemBean riskListBean = new StateItemBean();
+					riskListBean.setStateItemList(ristList);
 					session.setAttribute("riskList", riskListBean);
 					session.setAttribute("userTypeInChinese", "软件工程师");
 					context.getRequestDispatcher("/jsp/softwareEngineer/riskViewForSE.jsp").forward(request, response);
 				}
-				else{
-					
+				else if(Role.Manager==role){
+					session.setAttribute("userTypeInChinese", "项目经理");
+					context.getRequestDispatcher("/jsp/softwareEngineer/riskViewForSE.jsp").forward(request, response);
+					//TODO
 				}
 			}
 		}

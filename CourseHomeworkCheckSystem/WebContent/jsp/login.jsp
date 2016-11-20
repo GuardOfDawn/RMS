@@ -14,7 +14,7 @@
 			<h2>欢迎来到风险管理系统</h2>
 			<form method='POST' action='../LoginServlet'>
 				<div class="form_settings">
-					<p>用户名&nbsp;&nbsp;<input type="text" name="userid" value="" /></p>
+					<p>用户名&nbsp;&nbsp;<input type="text" name="userId" value="" /></p>
             		<p>用户密码&nbsp;&nbsp;<input type="password" name="password" value="" /></p>
 					<p style="padding-top: 15px"><span>&nbsp;</span>
 						<input class="submit" type="submit" name="login" value="登录"/>

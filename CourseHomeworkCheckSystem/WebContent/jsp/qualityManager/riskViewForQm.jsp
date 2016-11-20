@@ -15,12 +15,15 @@
 			type="rms.servlet.business.RiskListBean"
 			scope="session"></jsp:useBean>
 	<jsp:useBean id="riskItem"
-			class="rms.model.RiskItem"
+			class="newproject.model.RiskItem"
 			scope="page"></jsp:useBean>
 	<div id="main">
 	  	<header>
 	      <nav>
 	        <ul class="lavaLampWithImage" id="lava_menu">
+          	  <li class="current"><a href="<%=path%>/RiskViewServlet">风险管理</a></li>
+          	  <li><a href="<%=path%>/Dessert/storevisitall">风险管理计划</a></li>
+          	  <li><a href="<%=path%>/Dessert/storevisitall">风险状况统计</a></li>
           	  <li><a>您好，<%=session.getAttribute("userTypeInChinese")%>,<%=session.getAttribute("userid")%></a></li>
 	          <li><a href="<%=path%>/LogoutServlet">登出</a></li>
 	        </ul>
@@ -32,8 +35,6 @@
 	  	      <ul>
 			    <br></br>
 			    <li><a href="<%=path%>/RiskViewServlet">查看所有风险</a></li>
-			    <br></br>
-			    <li><a href="<%=path%>/RiskFollowedViewServlet">跟踪的风险</a></li>
 				<br></br>
 				<li><a href="<%=path%>/jsp/qualityManager/addRisk.jsp">添加风险</a></li>
 	 	      </ul>
@@ -41,34 +42,18 @@
    	  	  </div>
 		  <div id="content">
 		    <table id="riskListTable" style="width:100%; border-spacing:0;">
-		    <tr><th>序号</th><th>可能性</th><th>影响程度</th><th>触发器</th><th>提交者</th><th>状态</th><th>详细</th><th>跟踪</th><th>删除</th><th>修改</th></tr>
+		    <tr><th>序号</th><th>标题</th><th>内容</th><th>删除</th><th>修改</th></tr>
 		    <%
 		    int number = 1;
 		    for(int i=0;i<riskList.getSize();i++){
 		    	pageContext.setAttribute("riskItem",riskList.getRisk(i));
 		    	request.setAttribute("number", number);
-		    	request.setAttribute("followCondition", riskList.isFollowed(i));
 		    	number++;
 			%>
 		    <tr>
 		  	  <td><%=request.getAttribute("number") %></td>
-		  	  <td><jsp:getProperty name="riskItem" property="possibility" /></td>
-		      <td><jsp:getProperty name="riskItem" property="effect" /></td>
-		      <td><jsp:getProperty name="riskItem" property="trigger" /></td>
-		      <td><jsp:getProperty name="riskItem" property="commiterId" /></td>
-		  	  <td><jsp:getProperty name="riskItem" property="state" /></td>
-		      <td>
-		      	<input class="submit" type="button" name="checkRisk" value="查看"
-					 onclick="checkRiskRow('<jsp:getProperty name="riskItem" property="riskId" />')"/>
-		      </td>
-		      <%if(String.valueOf(request.getAttribute("followCondition")).equals("0")){ %>
-		      <td>
-		      	<input class="submit" type="button" name="followRisk" value="跟踪"
-					 onclick="followRiskRow('<jsp:getProperty name="riskItem" property="riskId" />')">
-		      </td>
-		      <%}else{ %>
-		      <td>已跟踪</td>
-		      <%} %>
+		  	  <td><jsp:getProperty name="riskItem" property="title" /></td>
+		      <td><jsp:getProperty name="riskItem" property="description" /></td>
 		      <td>
 		      	<input class="submit" type="button" name="deleteRisk" value="删除"
 					 onclick="deleteRiskRow('<jsp:getProperty name="riskItem" property="riskId" />')"/>
