@@ -53,7 +53,7 @@
 		  <h2 align="center">查看风险详细</h2>
    	  	  <form action="" method="post">
 	   	  	<div class="form_settings" style="margin-left:150px">
-	  		  <p><span>风险编号</span><input type="text" name="riskId" readonly="readonly" value="<jsp:getProperty name="riskItem" property="riskId" />" /></p>
+	  		  <p><span>风险编号</span><input id="riskId" type="text" name="riskId" readonly="readonly" value="<jsp:getProperty name="riskItem" property="riskId" />" /></p>
 	  		  <p><span>对应项目编号</span><input type="text" name="projectId" readonly="readonly" value="<jsp:getProperty name="riskItem" property="projectId" />" /></p>
 	  		    <%
               	if(riskItem.getPossibility().equals("High")){ %>
@@ -92,7 +92,7 @@
 	          <p><span>风险内容:</span><textarea rows="6" cols="50" readonly name="name" ><jsp:getProperty name="riskItem" property="description" /></textarea></p>
 			 </div>
 			 
-			 <div class="form_settings">
+			 <div class="form_settings" style="margin-left:20px">
 			 	<p><span>风险跟踪记录</span></p>
 			 	<input class="submit" type="button" value="添加状态记录" onclick="addStateItem()"/>
 				<br>
@@ -125,6 +125,13 @@
 				</table>
 				<br>
 				<%}%>
+				<%String addRes = String.valueOf(request.getAttribute("res"));
+				  if(addRes!=null&&addRes.equals("true")){ %>
+				  <p><span>风险状态添加成功</span></p>
+				<%}
+				  else if(addRes!=null&&addRes.equals("false")){%>
+				  <p><span>风险状态添加失败</span></p>
+				<%} %>
 			 </div>
 			 
 		   </form>
@@ -179,7 +186,13 @@ function closeAddState(){
 	document.getElementById('lightForAdd').style.display='none';
 }
 function addStateItem(){
-	
+	var addedStateString = "";
+	addedStateString = addedStateString+document.getElementById('riskId').value;
+	addedStateString = addedStateString+"\",\"";
+	addedStateString = addedStateString+document.getElementById('riskStateAdd').value;
+	addedStateString = addedStateString+"\",\"";
+	addedStateString = addedStateString+document.getElementById('descriptionAdd').value;
+	window.location.href='<%=path%>/RiskStateAddServlet?addedStateString='+addedStateString;
 }
 </script>
 </html>

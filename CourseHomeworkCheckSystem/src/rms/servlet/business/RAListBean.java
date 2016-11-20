@@ -25,5 +25,9 @@ public class RAListBean implements Serializable{
 	public RA getRA(int index){
 		return raList.get(index);
 	}
+	
+	public int getSize(){
+		return raList.size();
+	}
 
 }

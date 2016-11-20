@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@page import="rms.servlet.business.RAListBean"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -11,11 +12,11 @@
   	<script type="text/javascript" src="<%=path%>/js/modernizr-1.5.min.js"></script>
 </head>
 <body>
-<jsp:useBean id="riskList"
-			type="rms.servlet.business.RiskListBean"
-			scope="session"></jsp:useBean>
-	<jsp:useBean id="riskItem"
-			class="newproject.model.RiskItem"
+<jsp:useBean id="raList"
+			class="rms.servlet.business.RAListBean"
+			scope="page"></jsp:useBean>
+	<jsp:useBean id="raItem"
+			class="newproject.model.RA"
 			scope="page"></jsp:useBean>
 	<div id="main">
 	  	<header>
@@ -41,9 +42,24 @@
 			</div>
    	  	  </div>
 		  <div id="content">
-		    
-		    
-		    
+		    <table id="riskListTable" style="width:100%; border-spacing:0;">
+		    <tr><th>序号</th><th>计划编号</th><th>项目编号</th><th>计划描述</th></tr>
+		    <%
+		    int number = 1;
+		    raList = (RAListBean) request.getAttribute("raList");
+		    for(int i=0;i<raList.getSize();i++){
+		    	pageContext.setAttribute("raItem",raList.getRA(i));
+		    	request.setAttribute("number", number);
+		    	number++;
+			%>
+		    <tr>
+		  	  <td><%=request.getAttribute("number") %></td>
+		  	  <td><jsp:getProperty name="raItem" property="raId" /></td>
+		      <td><jsp:getProperty name="raItem" property="projectId" /></td>
+		      <td><jsp:getProperty name="raItem" property="description" /></td>
+		    </tr>
+		  	<%} %>
+		    </table>
 		  </div>
 		</div>
 	</div>

@@ -24,7 +24,7 @@ public class StateItemDaoImpl implements StateItemDao{
 				+"','"+stateItem.getComitter()+"','"+stateItem.getFollower()+"','"
 				+this.db.convert(stateItem.getTime())+"');";
 		boolean flag = this.db.executeCUD(sql);
-		return flag;
+		return true;
 	}
 
 	@Override

@@ -43,7 +43,6 @@ public class RAAddRiskServlet extends HttpServlet {
 				response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
 			}
 			else{
-				session.setAttribute("userId", userId);
 				RA newRA = new RA();
 				newRA.setRaId(IdProducer.produceRAId());
 				newRA.setProjectId(request.getParameter("project"));
