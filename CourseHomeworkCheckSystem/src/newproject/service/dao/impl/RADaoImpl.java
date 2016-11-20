@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import rms.common.RiskState;
 import newproject.model.Project;
 import newproject.model.RA;
 import newproject.model.RiskItem;
@@ -124,24 +125,52 @@ public class RADaoImpl implements RADao{
 			ra.setDescription(resultSet.getString(2));
 			ra.setSetter(userId);
 		} catch (SQLException e) {
-			
+			return null;
 		}
-		return result;
+		
+		for(int i=0;i<list.size();i++){
+			List<String> sids = getSids(list.get(i).getRaId());
+			List<StateItem> items = new ArrayList<StateItem>();
+			for(int j=0;j<sids.size();j++){
+				StateItem item = retrieve(sids.get(j));
+				items.add(item);
+			}
+			list.get(i).setRiskList(items);
+		}
+		return list;
 		
 	}
 
 	@Override
 	public List<RA> findByProject(String pid) {
-		String sql = "select raid,sid from belongto where pid='"+pid+"';";
+		List<String> raids = getRids(pid);
+		List<RA> ras = new ArrayList<RA>();
+		for(int i=0;i<raids.size();i++){
+			RA temp = getRA(raids.get(i));
+			temp.setProjectId(pid);
+			List<String> sids = getSids(raids.get(i));
+			List<StateItem> items = new ArrayList<StateItem>();
+			for(int j=0;j<sids.size();j++){
+				StateItem item = retrieve(sids.get(j));
+				items.add(item);
+			}
+			temp.setRiskList(items);
+			ras.add(temp);
+		}
+		return ras;
+	}
+
+	private RA getRA(String string) {
+		RA ra = new RA();
+		String sql = "select setter,description from ra where raid='"+string+"';";
 		ResultSet resultSet = this.db.executeQuery(sql);
-		List<RA> list = new ArrayList<RA>();
 		if(resultSet == null)
-			return list;
+			return null;
 		int row = 0;
 		try {
 			row = resultSet.getRow();
 		} catch (SQLException e) {
-			return list;
+			return null;
 		}
 		while(row > 0){
 			try {
@@ -150,17 +179,111 @@ public class RADaoImpl implements RADao{
 				row--;
 				continue;
 			}
-			RiskItem item = new RiskItem();
 			try {
-				item.setRiskId(resultSet.getString(1));
-				item.setTitle(resultSet.getString(2));
-				item.setDescription(resultSet.getString(3));
+				ra.setRaId(string);
+				ra.setSetter(resultSet.getString(1));
+				ra.setDescription(resultSet.getString(2));
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 			row--;
 		}
-		return list;
+		return ra;
 	}
 
+	private List<String> getSids(String string) {
+		String sql = "select sid from belongto where raid='"+string+"';";
+		ResultSet resultSet = this.db.executeQuery(sql);
+		List<String> sids =  new ArrayList<String>();
+		if(resultSet == null)
+			return null;
+		int row = 0;
+		try {
+			row = resultSet.getRow();
+		} catch (SQLException e) {
+			return null;
+		}
+		while(row > 0){
+			try {
+				resultSet.next();
+			} catch (SQLException e) {
+				row--;
+				continue;
+			}
+			try {
+				sids.add(resultSet.getString(1));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			row--;
+		}
+		return sids;
+	}
+
+	private List<String> getRids(String pid) {
+		String sql = "select raid from belongto where pid='"+pid+"';";
+		ResultSet resultSet = this.db.executeQuery(sql);
+		List<String> raids = new ArrayList<String>();
+		if(resultSet == null)
+			return null;
+		int row = 0;
+		try {
+			row = resultSet.getRow();
+		} catch (SQLException e) {
+			return null;
+		}
+		while(row > 0){
+			try {
+				resultSet.next();
+			} catch (SQLException e) {
+				row--;
+				continue;
+			}
+			try {
+				raids.add(resultSet.getString(1));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			row--;
+		}
+		return raids;
+	}
+
+	private StateItem retrieve(String sid){
+		String sql = "select * from riskstate where sid='"+sid+"');";
+		StateItem item = new StateItem();
+		ResultSet resultSet = this.db.executeQuery(sql);
+		if(resultSet == null)
+			return item;
+		int row = 0;
+		try {
+			row = resultSet.getRow();
+		} catch (SQLException e) {
+			return item;
+		}
+		while(row > 0){
+			try {
+				resultSet.next();
+			} catch (SQLException e) {
+				row--;
+				continue;
+			}
+			try {
+				item.setStateId(resultSet.getString(1));
+				item.setRiskId(resultSet.getString(2));
+				item.setDescription(resultSet.getString(3));
+				item.setState(RiskState.valueOf(resultSet.getString(4)));
+				item.setPossibility(resultSet.getString(5));
+				item.setEffectlevel(resultSet.getString(6));
+				item.setThreshold(resultSet.getString(7));
+				item.setComitter(resultSet.getString(8));
+				item.setFollower(resultSet.getString(9));
+				item.setTime(this.db.convert(resultSet.getString(10)));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			row--;
+		}
+		return item;
+	}
 }

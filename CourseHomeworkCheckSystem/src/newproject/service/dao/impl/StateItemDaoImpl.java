@@ -52,6 +52,7 @@ public class StateItemDaoImpl implements StateItemDao{
 		return flag;
 	}
 
+	
 	@Override
 	public List<StateItem> retrieve(String raId, String riskId) {
 		String sql = "select * from riskstate where ";
