@@ -27,8 +27,10 @@ public class ProjectDaoImpl implements ProjectDao{
 
 	@Override
 	public boolean remove(String pid) {
-		String sql = "delete from project where pid='"+pid+"';";
-		boolean flag = this.db.executeCUD(sql);
+		String sql1 = "delete from project where pid='"+pid+"';";
+		boolean flag = this.db.executeCUD(sql1);
+		String sql2 = "delete from belongto where pid='"+pid+"';";
+		flag = flag & this.db.executeCUD(sql2);
 		return flag;
 	}
 
@@ -72,6 +74,11 @@ public class ProjectDaoImpl implements ProjectDao{
 			list.add(p);
 			row--;
 		}
+		try {
+			resultSet.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return list;
 	}
 
@@ -106,6 +113,11 @@ public class ProjectDaoImpl implements ProjectDao{
 			}
 			list.add(user);
 			row--;
+		}
+		try {
+			resultSet.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return list;
 	}

@@ -28,8 +28,10 @@ public class UserDaoImpl implements UserDao{
 
 	@Override
 	public boolean remove(String id) {
-		String sql = "delete from user where uid='"+id+"';";
-		boolean flag = this.db.executeCUD(sql);
+		String sql1 = "delete from user where uid='"+id+"';";
+		boolean flag = this.db.executeCUD(sql1);
+		String sql2 = "delete from `join` where uid='"+id+"';";
+		flag = flag & this.db.executeCUD(sql2);
 		return flag;
 	}
 
@@ -61,6 +63,11 @@ public class UserDaoImpl implements UserDao{
 			user.setUserName(resultSet.getString(2));
 			user.setPassword(resultSet.getString(3));
 			user.setRole(Role.valueOf(resultSet.getString(4)));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			resultSet.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -97,6 +104,11 @@ public class UserDaoImpl implements UserDao{
 				e.printStackTrace();
 			}
 			row--;
+		}
+		try {
+			resultSet.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return list;
 	}

@@ -7,7 +7,6 @@ import java.util.List;
 import newproject.model.StateItem;
 import newproject.service.dao.StateItemDao;
 import rms.common.RiskState;
-
 public class StateItemDaoImpl implements StateItemDao{
 	
 	private DBTool db;

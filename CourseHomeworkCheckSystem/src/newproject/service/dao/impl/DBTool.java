@@ -32,6 +32,11 @@ public class DBTool {
 		} finally{
 			this.daoHelper.closeConnection(connection);
 		}
+		try {
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return result;
 	}
 	public ResultSet executeQuery(String sql){
@@ -53,6 +58,11 @@ public class DBTool {
 		} catch (SQLException e) {
 		} finally {
 			this.daoHelper.closeConnection(connection);
+		}
+		try {
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return resultSet;
 	}
