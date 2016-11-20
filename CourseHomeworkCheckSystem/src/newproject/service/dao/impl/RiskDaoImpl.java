@@ -50,15 +50,11 @@ public class RiskDaoImpl implements RiskDao{
 		RiskItem result = new RiskItem();
 		try {
 			resultSet.next();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		try {
 			result.setRiskId(resultSet.getString(1));
 			result.setTitle(resultSet.getString(2));
 			result.setDescription(resultSet.getString(3));
 		} catch (SQLException e) {
-			
+			e.printStackTrace();
 		}
 		return result;
 	}
@@ -70,30 +66,16 @@ public class RiskDaoImpl implements RiskDao{
 		List<RiskItem> list = new ArrayList<RiskItem>();
 		if(resultSet == null)
 			return list;
-		int row = 0;
 		try {
-			resultSet.next();
-			row = resultSet.getRow();
-		} catch (SQLException e) {
-			return list;
-		}
-		while(row > 0){
-			try {
-				resultSet.next();
-			} catch (SQLException e) {
-				row--;
-				continue;
-			}
-			RiskItem item = new RiskItem();
-			try {
+			while(resultSet.next()){
+				RiskItem item = new RiskItem();
 				item.setRiskId(resultSet.getString(1));
 				item.setTitle(resultSet.getString(2));
 				item.setDescription(resultSet.getString(3));
 				list.add(item);
-			} catch (SQLException e) {
-				e.printStackTrace();
 			}
-			row--;
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return list;
 	}

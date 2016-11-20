@@ -50,25 +50,13 @@ public class UserDaoImpl implements UserDao{
 		ResultSet resultSet = this.db.executeQuery(sql);
 		if(resultSet == null)
 			return null;
-		int row = 0;
+		User user = new User();	
 		try {
 			resultSet.next();
-			row = resultSet.getRow();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		if(row == 0)
-			return null;
-		User user = new User();
-		try {
 			user.setUserID(resultSet.getString(1));
 			user.setUserName(resultSet.getString(2));
 			user.setPassword(resultSet.getString(3));
 			user.setRole(Role.valueOf(resultSet.getString(4)));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		try {
 			resultSet.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -83,32 +71,16 @@ public class UserDaoImpl implements UserDao{
 		List<User> list = new ArrayList<User>();
 		if(resultSet == null)
 			return list;
-		int row = 0;
 		try {
-			row = resultSet.getRow();
-		} catch (SQLException e) {
-			return list;
-		}
-		while(row > 0){
-			try {
-				resultSet.next();
-			} catch (SQLException e) {
-				row--;
-				continue;
-			}
-			User user = new User();
-			try {
+			while(resultSet.next()){
+				User user = new User();
 				user.setUserID(resultSet.getString(1));
 				user.setUserName(resultSet.getString(2));
 				user.setPassword(resultSet.getString(3));
 				user.setRole(Role.valueOf(resultSet.getString(4)));
-			} catch (SQLException e) {
-				e.printStackTrace();
+				list.add(user);
+				resultSet.close();
 			}
-			row--;
-		}
-		try {
-			resultSet.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

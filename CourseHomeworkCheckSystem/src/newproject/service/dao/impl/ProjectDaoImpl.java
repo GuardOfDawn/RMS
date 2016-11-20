@@ -53,23 +53,14 @@ public class ProjectDaoImpl implements ProjectDao{
 		try {
 			while(resultSet.next()){
 				Project p = new Project();
-				try {
-					p.setProjectId(resultSet.getString(1));
-					p.setProjectName(resultSet.getString(2));
-					p.setDescription(resultSet.getString(3));
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+				p.setProjectId(resultSet.getString(1));
+				p.setProjectName(resultSet.getString(2));
+				p.setDescription(resultSet.getString(3));
 				list.add(p);
 			}
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try {
 			resultSet.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
 		}
 		return list;
 	}
@@ -81,35 +72,18 @@ public class ProjectDaoImpl implements ProjectDao{
 		List<User> list = new ArrayList<User>();
 		if(resultSet == null)
 			return list;
-		int row = 0;
 		try {
-			row = resultSet.getRow();
-		} catch (SQLException e) {
-			return list;
-		}
-		while(row > 0){
-			try {
-				resultSet.next();
-			} catch (SQLException e) {
-				row--;
-				continue;
-			}
-			User user = new User();
-			try {
+			while(resultSet.next()){
+				User user = new User();
 				user.setUserID(resultSet.getString(1));
 				user.setUserName(resultSet.getString(2));
 				user.setPassword(null);
 				user.setRole(Role.valueOf(resultSet.getString(3)));
-			} catch (SQLException e) {
-				e.printStackTrace();
+				resultSet.close();
+				list.add(user);
 			}
-			list.add(user);
-			row--;
-		}
-		try {
-			resultSet.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
 		}
 		return list;
 	}

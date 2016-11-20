@@ -73,21 +73,9 @@ public class StateItemDaoImpl implements StateItemDao{
 		ResultSet resultSet = this.db.executeQuery(sql);
 		if(resultSet == null)
 			return list;
-		int row = 0;
 		try {
-			row = resultSet.getRow();
-		} catch (SQLException e) {
-			return list;
-		}
-		while(row > 0){
-			try {
-				resultSet.next();
-			} catch (SQLException e) {
-				row--;
-				continue;
-			}
-			StateItem item = new StateItem();
-			try {
+			while(resultSet.next()){
+				StateItem item = new StateItem();
 				item.setStateId(resultSet.getString(1));
 				item.setRiskId(resultSet.getString(2));
 				item.setDescription(resultSet.getString(3));
@@ -98,11 +86,11 @@ public class StateItemDaoImpl implements StateItemDao{
 				item.setComitter(resultSet.getString(8));
 				item.setFollower(resultSet.getString(9));
 				item.setTime(this.db.convert(resultSet.getString(10)));
-			} catch (SQLException e) {
-				e.printStackTrace();
+				list.add(item);
+				resultSet.close();
 			}
-			list.add(item);
-			row--;
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return list;
 	}
@@ -114,36 +102,28 @@ public class StateItemDaoImpl implements StateItemDao{
 		ResultSet resultSet = this.db.executeQuery(sql);
 		if(resultSet == null)
 			return list;
-		int row = 0;
 		try {
-			row = resultSet.getRow();
+			while(resultSet.next()){
+				StateItem item = new StateItem();
+				try {
+					item.setStateId(resultSet.getString(1));
+					item.setRiskId(resultSet.getString(2));
+					item.setDescription(resultSet.getString(3));
+					item.setState(RiskState.valueOf(resultSet.getString(4)));
+					item.setPossibility(resultSet.getString(5));
+					item.setEffectlevel(resultSet.getString(6));
+					item.setThreshold(resultSet.getString(7));
+					item.setComitter(resultSet.getString(8));
+					item.setFollower(resultSet.getString(9));
+					item.setTime(this.db.convert(resultSet.getString(10)));
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				list.add(item);
+				resultSet.close();
+			}
 		} catch (SQLException e) {
-			return list;
-		}
-		while(row > 0){
-			try {
-				resultSet.next();
-			} catch (SQLException e) {
-				row--;
-				continue;
-			}
-			StateItem item = new StateItem();
-			try {
-				item.setStateId(resultSet.getString(1));
-				item.setRiskId(resultSet.getString(2));
-				item.setDescription(resultSet.getString(3));
-				item.setState(RiskState.valueOf(resultSet.getString(4)));
-				item.setPossibility(resultSet.getString(5));
-				item.setEffectlevel(resultSet.getString(6));
-				item.setThreshold(resultSet.getString(7));
-				item.setComitter(resultSet.getString(8));
-				item.setFollower(resultSet.getString(9));
-				item.setTime(this.db.convert(resultSet.getString(10)));
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			list.add(item);
-			row--;
+			e.printStackTrace();
 		}
 		return list;
 	}
