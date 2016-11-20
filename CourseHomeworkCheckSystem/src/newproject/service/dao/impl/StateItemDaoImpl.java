@@ -89,6 +89,8 @@ public class StateItemDaoImpl implements StateItemDao{
 				list.add(item);
 			}
 			resultSet.close();
+			DBTool.connectionList.get(0).close();
+			DBTool.connectionList.remove(0);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -119,6 +121,8 @@ public class StateItemDaoImpl implements StateItemDao{
 				list.add(item);
 			}
 			resultSet.close();
+			DBTool.connectionList.get(0).close();
+			DBTool.connectionList.remove(0);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -44,7 +44,7 @@ public class RADaoImpl implements RADao{
 			}
 		}
 		
-		return flag;
+		return true;
 	}
 
 	@Override
@@ -104,6 +104,9 @@ public class RADaoImpl implements RADao{
 			ra.setRaId(resultSet.getString(1));
 			ra.setDescription(resultSet.getString(2));
 			ra.setSetter(userId);
+			resultSet.close();
+			DBTool.connectionList.get(0).close();
+			DBTool.connectionList.remove(0);
 		} catch (SQLException e) {
 			return null;
 		}
@@ -153,6 +156,8 @@ public class RADaoImpl implements RADao{
 				ra.setDescription(resultSet.getString(2));
 			}
 			resultSet.close();
+			DBTool.connectionList.get(0).close();
+			DBTool.connectionList.remove(0);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -170,6 +175,8 @@ public class RADaoImpl implements RADao{
 				sids.add(resultSet.getString(1));
 			}
 			resultSet.close();
+			DBTool.connectionList.get(0).close();
+			DBTool.connectionList.remove(0);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -187,6 +194,8 @@ public class RADaoImpl implements RADao{
 				raids.add(resultSet.getString(1));
 			}
 			resultSet.close();
+			DBTool.connectionList.get(0).close();
+			DBTool.connectionList.remove(0);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -213,6 +222,8 @@ public class RADaoImpl implements RADao{
 				item.setTime(this.db.convert(resultSet.getString(10)));
 			}
 			resultSet.close();
+			DBTool.connectionList.get(0).close();
+			DBTool.connectionList.remove(0);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

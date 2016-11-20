@@ -58,6 +58,8 @@ public class UserDaoImpl implements UserDao{
 			user.setPassword(resultSet.getString(3));
 			user.setRole(Role.valueOf(resultSet.getString(4)));
 			resultSet.close();
+			DBTool.connectionList.get(0).close();
+			DBTool.connectionList.remove(0);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -81,6 +83,8 @@ public class UserDaoImpl implements UserDao{
 				list.add(user);
 			}
 			resultSet.close();
+			DBTool.connectionList.get(0).close();
+			DBTool.connectionList.remove(0);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

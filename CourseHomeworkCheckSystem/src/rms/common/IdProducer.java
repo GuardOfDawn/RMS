@@ -4,6 +4,8 @@ import java.util.Calendar;
 
 public class IdProducer {
 	
+	private static int num = 0;
+	
 	public static String produceRiskId(){
 		StringBuffer riskId = new StringBuffer("r");
 		Calendar c = Calendar.getInstance();
@@ -65,6 +67,8 @@ public class IdProducer {
 			riskId.append("0");
 		}
 		riskId.append(second);
+		riskId.append(num);
+		num++;
 		return riskId.toString();
 	}
 	

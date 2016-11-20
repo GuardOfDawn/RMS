@@ -4,14 +4,17 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import newproject.service.dao.DaoHelper;
 import newproject.service.dao.DaoHelperImpl;
 
 public class DBTool {
 	private DaoHelper daoHelper;
+	public static List<Connection> connectionList = new ArrayList<Connection>();
 	public DBTool(){
 		this.daoHelper = DaoHelperImpl.getBaseDaoInstance();
 	}
@@ -61,9 +64,8 @@ public class DBTool {
 			resultSet = statement.executeQuery(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-//			this.daoHelper.closeConnection(connection);
-		}
+		} 
+		connectionList.add(connection);
 //		try {
 //			statement.close();
 //		} catch (SQLException e) {
@@ -75,7 +77,7 @@ public class DBTool {
 		StringBuilder sb = new StringBuilder();
 		sb.append(time.get(Calendar.YEAR));
 		sb.append("/");
-		sb.append(time.get(Calendar.MONTH));
+		sb.append(time.get(Calendar.MONTH)+1);
 		sb.append("/");
 		sb.append(time.get(Calendar.DAY_OF_MONTH));
 		return sb.toString();
@@ -84,7 +86,7 @@ public class DBTool {
 		Calendar time = new GregorianCalendar();
 		String[] e = s.split("/");
 		time.set(Calendar.YEAR, Integer.valueOf(e[0]));
-		time.set(Calendar.MONTH,Integer.valueOf(e[1]));
+		time.set(Calendar.MONTH,Integer.valueOf(e[1])-1);
 		time.set(Calendar.DAY_OF_MONTH,Integer.valueOf(e[2]));
 		return time;
 	}

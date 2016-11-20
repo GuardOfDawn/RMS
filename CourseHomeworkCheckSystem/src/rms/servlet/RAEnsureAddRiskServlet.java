@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import newproject.ProjectService;
 import newproject.model.RA;
+import newproject.model.RiskItem;
 import newproject.model.StateItem;
 import newproject.model.User;
 import newproject.service.impl.ProjectServiceImpl;
@@ -60,22 +61,29 @@ public class RAEnsureAddRiskServlet extends HttpServlet {
 				String riskListString = request.getParameter("riskListString");
 				String[] riskListArray = riskListString.split("\":\"");
 				List<StateItem> riskList = new ArrayList<StateItem>();
+				List<RiskItem> riskItemList = new ArrayList<RiskItem>();
 				for(int i=0;i<riskListArray.length;i++){
 					String[] parts = riskListArray[i].split("\",\"");
 					StateItem item = new StateItem();
 					item.setStateId(IdProducer.produceStateId());
 					item.setRiskId(parts[0]);
-					item.setPossibility(parts[1]);
-					item.setEffectlevel(parts[2]);
-					item.setState(RiskState.valueOf(parts[3]));
-					item.setThreshold(parts[4]);
-					item.setDescription(parts[5]);
+					item.setPossibility(parts[2]);
+					item.setEffectlevel(parts[3]);
+					item.setState(RiskState.valueOf(parts[4]));
+					item.setThreshold(parts[5]);
+					item.setDescription(parts[6]);
 					item.setProjectId(newRA.getProjectId());
 					item.setComitter(userId);
 					item.setTime(Calendar.getInstance());
 					riskList.add(item);
+					RiskItem item2 = new RiskItem();
+					item2.setRiskId(parts[0]);
+					item2.setTitle(parts[1]);
+					item2.setDescription(parts[6]);
+					riskItemList.add(item2);
 				}
 				newRA.setRiskList(riskList);
+				newRA.setRiskItemList(riskItemList);
 				session.setAttribute("newRA", newRA);
 				StateItemBean riskListBean = new StateItemBean();
 				riskListBean.setStateItemList(riskList);

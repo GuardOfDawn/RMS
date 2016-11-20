@@ -19,12 +19,12 @@ import newproject.model.StateItem;
 import newproject.model.User;
 import newproject.service.impl.RiskServiceImpl;
 import newproject.service.impl.StateItemServiceImpl;
+import rms.common.DateFormatter;
 import rms.common.Role;
 import rms.servlet.business.FullRisk;
 import rms.servlet.business.FullRiskListBean;
 import rms.servlet.business.RiskListBean;
 import rms.servlet.business.RiskStateItem;
-import rms.servlet.business.StateItemBean;
 
 /**
  * Servlet implementation class RiskViewServlet
@@ -126,6 +126,7 @@ public class RiskViewServlet extends HttpServlet {
 							if(states[i][j]>-1){
 								RiskStateItem stateItem = new RiskStateItem();
 								stateItem.setComitter(riskList.get(states[i][0]).getComitter());
+								stateItem.setTime(DateFormatter.calendarToString("yyyy-MM-dd HH:mm:ss",riskList.get(states[i][0]).getTime()));
 								stateItem.setState(riskList.get(states[i][0]).getState());
 								stateItem.setDescription(riskList.get(states[i][0]).getDescription());
 								stateList.add(stateItem);

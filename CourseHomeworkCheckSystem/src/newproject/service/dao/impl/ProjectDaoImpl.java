@@ -59,6 +59,8 @@ public class ProjectDaoImpl implements ProjectDao{
 				list.add(p);
 			}
 			resultSet.close();
+			DBTool.connectionList.get(0).close();
+			DBTool.connectionList.remove(0);
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -82,6 +84,8 @@ public class ProjectDaoImpl implements ProjectDao{
 				list.add(user);
 			}
 			resultSet.close();
+			DBTool.connectionList.get(0).close();
+			DBTool.connectionList.remove(0);
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}

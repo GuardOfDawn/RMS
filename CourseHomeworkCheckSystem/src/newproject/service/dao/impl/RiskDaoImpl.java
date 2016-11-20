@@ -20,8 +20,8 @@ public class RiskDaoImpl implements RiskDao{
 	public boolean insert(RiskItem item) {
 		String sql = "insert into risk value('"+item.getRiskId()+"','"
 				+item.getTitle()+"','"+item.getDescription()+"');";
-		boolean flag = this.db.executeCUD(sql);
-		return flag;
+		this.db.executeCUD(sql);
+		return true;
 	}
 
 	@Override
@@ -37,8 +37,8 @@ public class RiskDaoImpl implements RiskDao{
 	public boolean modify(RiskItem item) {
 		String sql = "update risk set title='"+item.getTitle()+"',description='"
 				+item.getDescription()+"' where rid='"+item.getRiskId()+"';";
-		boolean flag = this.db.executeCUD(sql);
-		return flag;
+		this.db.executeCUD(sql);
+		return true;
 	}
 
 	@Override
@@ -47,13 +47,17 @@ public class RiskDaoImpl implements RiskDao{
 		ResultSet resultSet = this.db.executeQuery(sql);
 		if(resultSet == null)
 			return null;
-		RiskItem result = new RiskItem();
+		RiskItem result = null;
 		try {
-			resultSet.next();
-			result.setRiskId(resultSet.getString(1));
-			result.setTitle(resultSet.getString(2));
-			result.setDescription(resultSet.getString(3));
+			if(resultSet.next()){
+				result = new RiskItem();
+				result.setRiskId(resultSet.getString(1));
+				result.setTitle(resultSet.getString(2));
+				result.setDescription(resultSet.getString(3));
+			}
 			resultSet.close();
+			DBTool.connectionList.get(0).close();
+			DBTool.connectionList.remove(0);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -76,6 +80,8 @@ public class RiskDaoImpl implements RiskDao{
 				list.add(item);
 			}
 			resultSet.close();
+			DBTool.connectionList.get(0).close();
+			DBTool.connectionList.remove(0);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

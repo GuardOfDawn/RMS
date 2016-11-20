@@ -37,7 +37,7 @@
    	  	  </div>
 		  <div id="content">
 		    <table id="riskListTable" style="width:100%; border-spacing:0;">
-		    <tr><th>序号</th><th>项目</th><th>可能性</th><th>影响程度</th><th>状态</th><th>详细</th><th>修改</th><th>状态追踪</th></tr>
+		    <tr><th>序号</th><th>项目</th><th>可能性</th><th>影响程度</th><th>状态</th><th>状态追踪</th></tr>
 		    <%
 		    int number = 1;
 		    for(int i=0;i<fullRiskList.getSize();i++){
@@ -51,14 +51,6 @@
 		  	  <td><jsp:getProperty name="riskItem" property="possibility" /></td>
 		      <td><jsp:getProperty name="riskItem" property="effectlevel" /></td>
 		  	  <td><jsp:getProperty name="riskItem" property="state" /></td>
-		      <td>
-		      	<input class="submit" type="button" name="checkRisk" value="查看"
-					 onclick="checkRiskRow('<jsp:getProperty name="riskItem" property="riskId" />')"/>
-		      </td>
-		      <td>
-		      	<input class="submit" type="button" name="deleteRisk" value="修改"
-					 onclick="modifyRiskRow('<jsp:getProperty name="riskItem" property="riskId" />')"/>
-		      </td>
 		      <td>
 		      	<input class="submit" type="button" name="modifyRisk" value="添加状态"
 					 onclick="addRiskStateRow('<jsp:getProperty name="riskItem" property="riskId" />')"/>
@@ -96,14 +88,8 @@
   });
 </script>
 <script type="text/javascript">
-	function checkRiskRow(riskId){
-		window.location.href='<%=path%>/jsp/qualityManager/riskDetail.jsp?riskIdCheck='+riskId;
-	}
-	function modifyRiskRow(riskId){
-		window.location.href='<%=path%>/jsp/qualityManager/modifyRisk.jsp?riskIdModify='+riskId;
-	}
 	function addRiskStateRow(riskId){
-		
+		window.location.href='<%=path%>/jsp/softwareEngineer/riskDetailForSE.jsp?riskIdCheck='+riskId;
 	}
 </script>
 </html>

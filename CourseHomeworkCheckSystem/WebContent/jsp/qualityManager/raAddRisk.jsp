@@ -100,7 +100,7 @@
 						pageContext.setAttribute("riskCondition",rc);
 						pageContext.setAttribute("risk",rc.getRisk());	
 	          	  %>
-	         	    	<label id="mostAddedLabel<%=i %>"><input id="mostAdded<%=i %>" type="checkbox" value="<jsp:getProperty name="risk" property="riskId" />;<jsp:getProperty name="risk" property="description" />" /><jsp:getProperty name="risk" property="title" /></label><br>
+	         	    	<label id="mostAddedLabel<%=i %>"><input id="mostAdded<%=i %>" type="checkbox" value="<jsp:getProperty name="risk" property="riskId" />;<jsp:getProperty name="risk" property="title" />;<jsp:getProperty name="risk" property="description" />" /><jsp:getProperty name="risk" property="title" /></label><br>
 	          	  <%} %>
 	          	  </p>
 		          <p><span style="width:700px">2.该时间段演变成问题最多的风险：（不可选中的为已经导入的风险条目）</span></p>
@@ -135,7 +135,7 @@
 			  <HR style="border:1 dashed #987cb9" width="100%" color=#987cb9 SIZE=0.5>
 	          <h2 align="center">风险列表</h2>
 	          <table id="raRiskList" style="width:100%; border-spacing:0;">
-		        <tr><th>风险编号</th><th>可能性</th><th>影响程度</th><th>风险状态</th><th>触发器/阈值</th><th>风险内容</th><th>修改</th><th>删除</th></tr>
+		        <tr><th>风险编号</th><th>标题</th><th>可能性</th><th>影响程度</th><th>风险状态</th><th>触发器/阈值</th><th>风险内容</th><th>修改</th><th>删除</th></tr>
 		      </table>
 	        </div>
 	        <div class="form_settings" style="float:right">
@@ -146,10 +146,12 @@
 	      	  <p></p>
 	      	  <h2 align="center">导入风险条目</h2>
 	      	  <input type="text" id="importIdList" value="" style="display:none"/>
+	      	  <input type="text" id="importTitleList" value="" style="display:none"/>
 	      	  <input type="text" id="importDesList" value="" style="display:none"/>
 	      	  <p></p>
 	          <div class="form_settings" style="margin-left:60px" >
 	            <p><span>风险编号</span><input id="riskIdImport" type="text" name="riskId" value="" disabled="disabled"/></p>
+	            <p><span>风险标题</span><input id="riskTitleImport" type="text" name="riskTitle" value="" disabled="disabled"/></p>
 	            <p><span>可能性</span>
 				  <select id="possibilityImport" name="possibility">
           	    	<option value="High" selected="selected">高</option>
@@ -190,6 +192,7 @@
 	      	  <p></p>
 	          <div class="form_settings" style="margin-left:60px" >
 	            <p><span>风险编号</span><input id="riskIdAdd" type="text" name="riskId" value="" disabled="disabled"/></p>
+	            <p><span>风险标题</span><input id="riskTitleAdd" type="text" name="riskTitle" value=""/></p>
 	            <p><span>可能性</span>
 				  <select id="possibilityAdd" name="possibility">
           	    	<option value="High" selected="selected">高</option>
@@ -230,6 +233,7 @@
 	      	  <p></p>
 	          <div class="form_settings" style="margin-left:50px" >
 	            <p><span>风险编号</span><input id="riskIdM" type="text" name="riskId" value="" disabled="disabled"/></p>
+	            <p><span>风险标题</span><input id="riskTitleM" type="text" name="riskTitle" value=""/></p>
 	            <p><span>可能性</span>
 				  <select id="possibilityM" name="possibility">
           	    	<option value="High" selected="selected">高</option>
@@ -363,6 +367,7 @@ function addSuggestRisks(){
 	var r1_size = <%=request.getAttribute("r1_size")%>;
 	var r2_size = <%=request.getAttribute("r2_size")%>;
 	var riskIdList = new Array();
+	var riskTitleList = new Array();
 	var riskDesList = new Array();
 	var length = 0;
 	var exist = 0;
@@ -380,7 +385,8 @@ function addSuggestRisks(){
 			}
 			if(exist==0){
 				riskIdList[length]=parts[0];
-				riskDesList[length]=parts[1];
+				riskTitleList[length]=parts[1];
+				riskDesList[length]=parts[2];
 				length=length+1;
 			}
 			else{
@@ -400,7 +406,8 @@ function addSuggestRisks(){
 			}
 			if(exist==0){
 				riskIdList[length]=parts[0];
-				riskDesList[length]=parts[1];
+				riskTitleList[length]=parts[1];
+				riskDesList[length]=parts[2];
 				length=length+1;
 			}
 			else{
@@ -413,11 +420,14 @@ function addSuggestRisks(){
 	}
 	else{
 		document.getElementById('riskIdImport').value=riskIdList[0];
+		document.getElementById('riskTitleImport').value=riskTitleList[0];
 		document.getElementById('descriptionImport').value=riskDesList[0];
 		var idString = "";
+		var titleString = "";
 		var desString = "";
 		for(i=1;i<length;i++){
 			idString = idString+riskIdList[i];
+			titleString = titleString+riskTitleList[i];
 			desString = desString+riskDesList[i];
 			if(i!=length-1){
 				idString = idString+";";
@@ -425,6 +435,7 @@ function addSuggestRisks(){
 			}
 		}
 		document.getElementById('importIdList').value=idString;
+		document.getElementById('importIdList').value=titleString;
 		document.getElementById('importDesList').value=desString;
 		document.getElementById('lightForImport').style.display='block';
 	}
@@ -432,8 +443,10 @@ function addSuggestRisks(){
 function closeImportItem(){
 	//清除输入内容
 	document.getElementById('importIdList').value="";
+	document.getElementById('importTitleList').value="";
 	document.getElementById('importDesList').value="";
 	document.getElementById('riskIdImport').value="";
+	document.getElementById('riskTitleImport').value="";
 	var options = document.getElementById('possibilityImport').options;
 	options[0].selected = true;
 	options = document.getElementById('effectLevelImport').options;
@@ -456,16 +469,18 @@ function importRiskItem(){
     var newCel6 = newRow.insertCell(5);
     var newCel7 = newRow.insertCell(6);
     var newCel8 = newRow.insertCell(7);
+    var newCel9 = newRow.insertCell(8);
 
     var id = document.getElementById('riskIdImport').value;
     newCel1.innerHTML = id;
-    newCel2.innerHTML = document.getElementById('possibilityImport').value;
-    newCel3.innerHTML = document.getElementById('effectLevelImport').value;
-    newCel4.innerHTML = document.getElementById('riskStateImport').value;
-    newCel5.innerHTML = document.getElementById('thresholdImport').value;
-    newCel6.innerHTML = document.getElementById('descriptionImport').value;
-    newCel7.innerHTML = "<input class='submit' type='button' name='modifyItem' value='修改' onclick=\"modifyRow(\'"+id+"\')\" />";
-    newCel8.innerHTML = "<input class='submit' type='button' name='deleteItem' value='删除' onclick=\"deleteRow(\'"+id+"\')\" />";
+    newCel2.innerHTML = document.getElementById('riskTitleImport').value;
+    newCel3.innerHTML = document.getElementById('possibilityImport').value;
+    newCel4.innerHTML = document.getElementById('effectLevelImport').value;
+    newCel5.innerHTML = document.getElementById('riskStateImport').value;
+    newCel6.innerHTML = document.getElementById('thresholdImport').value;
+    newCel7.innerHTML = document.getElementById('descriptionImport').value;
+    newCel8.innerHTML = "<input class='submit' type='button' name='modifyItem' value='修改' onclick=\"modifyRow(\'"+id+"\')\" />";
+    newCel9.innerHTML = "<input class='submit' type='button' name='deleteItem' value='删除' onclick=\"deleteRow(\'"+id+"\')\" />";
 
     //使得推荐导入的相应风险条目不可选中（防止重复导入）
     var i=0;
@@ -492,6 +507,7 @@ function importRiskItem(){
     
     //下一个待导入的风险条目
 	var idString = document.getElementById('importIdList').value;
+    var titleString = document.getElementById('importTitleList').value;
 	var desString = document.getElementById('importDesList').value;
 	if(idString==""){
 		document.getElementById('lightForImport').style.display='none';
@@ -500,8 +516,10 @@ function importRiskItem(){
 	else{
 		alert("风险"+id+"导入成功，点击确定继续导入");
 		var idParts = idString.split(";");
+		var titleParts = titleString.split(";");
 		var desParts = desString.split(";");
 		document.getElementById('riskIdImport').value=idParts[0];
+		document.getElementById('riskTitleImport').value=titleString[0];
 		var options = document.getElementById('possibilityImport').options;
 		options[0].selected = true;
 		options = document.getElementById('effectLevelImport').options;
@@ -549,6 +567,7 @@ function addNewRisk(){
 function closeAddItem(){
 	//清除输入内容
 	document.getElementById('riskIdAdd').value="";
+	document.getElementById('riskTitleAdd').value="";
 	var options = document.getElementById('possibilityAdd').options;
 	options[0].selected = true;
 	options = document.getElementById('effectLevelAdd').options;
@@ -571,19 +590,22 @@ function addRiskItem(){
     var newCel6 = newRow.insertCell(5);
     var newCel7 = newRow.insertCell(6);
     var newCel8 = newRow.insertCell(7);
+    var newCel9 = newRow.insertCell(8);
 
     var id = document.getElementById('riskIdAdd').value;
     newCel1.innerHTML = id;
-    newCel2.innerHTML = document.getElementById('possibilityAdd').value;
-    newCel3.innerHTML = document.getElementById('effectLevelAdd').value;
-    newCel4.innerHTML = document.getElementById('riskStateAdd').value;
-    newCel5.innerHTML = document.getElementById('thresholdAdd').value;
-    newCel6.innerHTML = document.getElementById('descriptionAdd').value;
-    newCel7.innerHTML = "<input class='submit' type='button' name='modifyItem' value='修改' onclick=\"modifyRow(\'"+id+"\')\" />";
-    newCel8.innerHTML = "<input class='submit' type='button' name='deleteItem' value='删除' onclick=\"deleteRow(\'"+id+"\')\" />";
+    newCel2.innerHTML = document.getElementById('riskTitleAdd').value;
+    newCel3.innerHTML = document.getElementById('possibilityAdd').value;
+    newCel4.innerHTML = document.getElementById('effectLevelAdd').value;
+    newCel5.innerHTML = document.getElementById('riskStateAdd').value;
+    newCel6.innerHTML = document.getElementById('thresholdAdd').value;
+    newCel7.innerHTML = document.getElementById('descriptionAdd').value;
+    newCel8.innerHTML = "<input class='submit' type='button' name='modifyItem' value='修改' onclick=\"modifyRow(\'"+id+"\')\" />";
+    newCel9.innerHTML = "<input class='submit' type='button' name='deleteItem' value='删除' onclick=\"deleteRow(\'"+id+"\')\" />";
 
     //清除输入内容
 	document.getElementById('riskIdAdd').value="";
+	document.getElementById('riskTitleAdd').value="";
 	var options = document.getElementById('possibilityAdd').options;
 	options[0].selected = true;
 	options = document.getElementById('effectLevelAdd').options;
@@ -600,11 +622,12 @@ function modifyRow(riskId){
 	for(var i=1;i<rows.length;i++){
 		if(rows[i].cells[0].innerHTML==riskId){
 			document.getElementById('riskIdM').value=riskId;
-			document.getElementById('possibilityM').value= rows[i].cells[1].innerHTML;
-			document.getElementById('effectLevelM').value= rows[i].cells[2].innerHTML;
-			document.getElementById('riskStateM').value= rows[i].cells[3].innerHTML;
-			document.getElementById('thresholdM').value=rows[i].cells[4].innerHTML;
-			document.getElementById('descriptionM').value=rows[i].cells[5].innerHTML;
+			document.getElementById('riskTitleM').value= rows[i].cells[1].innerHTML;
+			document.getElementById('possibilityM').value= rows[i].cells[2].innerHTML;
+			document.getElementById('effectLevelM').value= rows[i].cells[3].innerHTML;
+			document.getElementById('riskStateM').value= rows[i].cells[4].innerHTML;
+			document.getElementById('thresholdM').value=rows[i].cells[5].innerHTML;
+			document.getElementById('descriptionM').value=rows[i].cells[6].innerHTML;
 			document.getElementById('lightForModify').style.display='block';
 			break;
 		}
@@ -643,6 +666,7 @@ function deleteRow(riskId){
 function closeModifyItem(){
 	//清除输入内容
 	document.getElementById('riskIdM').value="";
+	document.getElementById('riskTitleM').value="";
 	var options = document.getElementById('possibilityM').options;
 	options[0].selected = true;
 	options = document.getElementById('effectLevelM').options;
@@ -659,13 +683,15 @@ function modifyRiskItem(){
     var riskId = document.getElementById('riskIdM').value;
 	for(var i=1;i<rows.length;i++){
 		if(rows[i].cells[0].innerHTML==riskId){
-			rows[i].cells[1].innerHTML=document.getElementById('possibilityM').value;
-			rows[i].cells[2].innerHTML=document.getElementById('effectLevelM').value;
-			rows[i].cells[3].innerHTML=document.getElementById('riskStateM').value;
-			rows[i].cells[4].innerHTML=document.getElementById('thresholdM').value;
-			rows[i].cells[5].innerHTML=document.getElementById('descriptionM').value;
+			rows[i].cells[1].innerHTML=document.getElementById('riskTitleM').value;
+			rows[i].cells[2].innerHTML=document.getElementById('possibilityM').value;
+			rows[i].cells[3].innerHTML=document.getElementById('effectLevelM').value;
+			rows[i].cells[4].innerHTML=document.getElementById('riskStateM').value;
+			rows[i].cells[5].innerHTML=document.getElementById('thresholdM').value;
+			rows[i].cells[6].innerHTML=document.getElementById('descriptionM').value;
 			//clear contents
 			document.getElementById('riskIdM').value="";
+			document.getElementById('riskTitleM').value="";
 			var options = document.getElementById('possibilityM').options;
 			options[0].selected = true;
 			options = document.getElementById('effectLevelM').options;
@@ -695,6 +721,8 @@ function ensureAddRisk(){
 		riskList += rows[j].cells[4].innerHTML;
 		riskList += "\",\"";
 		riskList += rows[j].cells[5].innerHTML;
+		riskList += "\",\"";
+		riskList += rows[j].cells[6].innerHTML;
 		if(j!=rows.length-1){
 			riskList += "\":\"";
 		}

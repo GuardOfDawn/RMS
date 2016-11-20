@@ -49,10 +49,10 @@
 	          	<br>
 	          	<br>
 	          	<p><span>起始日期</span>
-	          	  <input type="text" id="startDate" size="12" value="选择日期" onclick="calShow('startDate');" onfocus="calShow('startDate');" style="width:80px;margin-left:-40px" onblur="checkStartDate()">
+	          	  <input type="text" id="startDate" size="12" value="选择日期" onclick="calShow('startDate');" onfocus="calShow('startDate');" style="width:100px;margin-left:-40px" onblur="checkStartDate()">
 	          	</p>
 	          	<p style="margin-top:-40px;margin-left:220px"><span>截止日期</span>
-	          	  <input type="text" id="endDate" size="12" value="选择日期" onclick="calShow('endDate');" onfocus="calShow('endDate');" style="width:80px;margin-left:-40px" onblur="checkEndDate()">
+	          	  <input type="text" id="endDate" size="12" value="选择日期" onclick="calShow('endDate');" onfocus="calShow('endDate');" style="width:100px;margin-left:-40px" onblur="checkEndDate()">
 	          	</p>
 	          	<input class="submit" type="button" name="ensure" value="查找" style="margin-top:-60px;margin-left:450px" onclick="getRiskStat()"/>
 	          </div>

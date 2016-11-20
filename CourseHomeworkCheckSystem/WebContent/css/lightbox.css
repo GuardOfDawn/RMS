@@ -6,7 +6,23 @@
 	left: 50%; 
 	margin-top:-240px;
 	width: 560px;
-	height: 460px; 
+	height: 560px; 
+	padding: 0px; 
+	border: 0px solid orange; 
+	background-color:#D5D5BE; 
+	z-index:10001; 
+	overflow: auto;
+} 
+
+.add_content { 
+	display: none; 
+	position: fixed;
+	top: 50%;
+	margin-left:-280px; 
+	left: 50%; 
+	margin-top:-240px;
+	width: 560px;
+	height: 360px; 
 	padding: 0px; 
 	border: 0px solid orange; 
 	background-color:#D5D5BE; 

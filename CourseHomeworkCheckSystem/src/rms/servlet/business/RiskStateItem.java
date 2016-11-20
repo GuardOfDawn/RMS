@@ -13,6 +13,8 @@ public class RiskStateItem implements Serializable{
 
 	private String comitter;
 	
+	private String time;
+
 	private RiskState state;
 	
 	private String description;
@@ -23,6 +25,14 @@ public class RiskStateItem implements Serializable{
 
 	public void setComitter(String comitter) {
 		this.comitter = comitter;
+	}
+	
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
 	}
 
 	public RiskState getState() {

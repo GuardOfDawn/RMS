@@ -19,5 +19,11 @@ public class DateFormatter {
 		calendar.setTime(date);
 		return calendar;
 	}
+	
+	public static String calendarToString(String format,Calendar calendar){
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		String dateStr = sdf.format(calendar.getTime());
+		return dateStr;
+	}
 
 }
