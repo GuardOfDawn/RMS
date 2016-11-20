@@ -26,8 +26,10 @@ public class RiskDaoImpl implements RiskDao{
 
 	@Override
 	public boolean remove(String id) {
-		String sql = "delete from risk where rid='"+id+"';";
-		boolean flag = this.db.executeCUD(sql);
+		String sql1 = "delete from risk where rid='"+id+"';";
+		boolean flag = this.db.executeCUD(sql1);
+		String sql2 = "delete from riskstate where rid='"+id+"';";
+		flag = flag & this.db.executeCUD(sql2);
 		return flag;
 	}
 

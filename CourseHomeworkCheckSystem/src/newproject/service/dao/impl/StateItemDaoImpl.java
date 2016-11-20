@@ -29,8 +29,10 @@ public class StateItemDaoImpl implements StateItemDao{
 
 	@Override
 	public boolean remove(String sid) {
-		String sql = "delete from riskstate where sid='"+sid+"';";
-		boolean flag = this.db.executeCUD(sql);
+		String sql1 = "delete from riskstate where sid='"+sid+"';";
+		boolean flag = this.db.executeCUD(sql1);
+		String sql2 = "delete from belongto where sid='"+sid+"';";
+		flag = flag & this.db.executeCUD(sql2);
 		return flag;
 	}
 
