@@ -1,6 +1,8 @@
 package newproject.model;
 
-public class RiskCondition {
+import java.io.Serializable;
+
+public class RiskCondition implements Serializable{
 	
 	private RiskItem risk;
 	

@@ -1,8 +1,9 @@
 package newproject.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class RA {
+public class RA implements Serializable{
 
 	private String raId;
 	
@@ -13,6 +14,8 @@ public class RA {
 	private String description;
 	
 	private List<StateItem> riskList;
+	
+	private List<RiskItem> riskItemList;
 
 	public String getRaId() {
 		return raId;
@@ -52,6 +55,14 @@ public class RA {
 
 	public void setRiskList(List<StateItem> riskList) {
 		this.riskList = riskList;
+	}
+
+	public List<RiskItem> getRiskItemList() {
+		return riskItemList;
+	}
+
+	public void setRiskItemList(List<RiskItem> riskItemList) {
+		this.riskItemList = riskItemList;
 	}
 	
 }
