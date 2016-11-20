@@ -39,4 +39,10 @@ public class StateItemServiceImpl implements StateItemService{
 		return list;
 	}
 
+	@Override
+	public List<StateItem> retrieveRisks(String developterId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
