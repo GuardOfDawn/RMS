@@ -97,7 +97,7 @@ public class StateItemDaoImpl implements StateItemDao{
 
 	@Override
 	public List<StateItem> retrieve(String developperID) {
-		String sql = "select * from riskstate where follower='"+developperID+"');";
+		String sql = "select * from riskstate where follower like '%"+developperID+"%');";
 		List<StateItem> list = new ArrayList<StateItem>();
 		ResultSet resultSet = this.db.executeQuery(sql);
 		if(resultSet == null)
