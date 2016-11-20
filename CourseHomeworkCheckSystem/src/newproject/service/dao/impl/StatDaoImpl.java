@@ -57,7 +57,6 @@ public class StatDaoImpl implements StatDao{
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			list.add(user);
 			row--;
 		}
 		try {
@@ -65,6 +64,8 @@ public class StatDaoImpl implements StatDao{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		
 		
 		return list;
 	}
