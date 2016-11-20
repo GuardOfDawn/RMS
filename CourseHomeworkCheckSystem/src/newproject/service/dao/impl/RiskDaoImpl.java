@@ -72,6 +72,7 @@ public class RiskDaoImpl implements RiskDao{
 			return list;
 		int row = 0;
 		try {
+			resultSet.next();
 			row = resultSet.getRow();
 		} catch (SQLException e) {
 			return list;
@@ -88,6 +89,7 @@ public class RiskDaoImpl implements RiskDao{
 				item.setRiskId(resultSet.getString(1));
 				item.setTitle(resultSet.getString(2));
 				item.setDescription(resultSet.getString(3));
+				list.add(item);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

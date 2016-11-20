@@ -5,13 +5,18 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<% String path = request.getContextPath();%>
-	<title>RA allocate risk for quality manager</title>
+	<title>ra overview for quality manager</title>
 	<link rel="stylesheet" type="text/css" href="<%=path%>/css/style.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/css/lightbox.css" />
-    <link rel="stylesheet" type="text/css" href="<%=path %>/css/progressbar.css" />
   	<script type="text/javascript" src="<%=path%>/js/modernizr-1.5.min.js"></script>
 </head>
 <body>
+<jsp:useBean id="riskList"
+			type="rms.servlet.business.RiskListBean"
+			scope="session"></jsp:useBean>
+	<jsp:useBean id="riskItem"
+			class="newproject.model.RiskItem"
+			scope="page"></jsp:useBean>
 	<div id="main">
 	  	<header>
 	      <nav>
@@ -36,18 +41,13 @@
 			</div>
    	  	  </div>
 		  <div id="content">
-		  	<%String res = String.valueOf(request.getAttribute("addRes"));
-			  if(res!=null&&res.equals("true")){%>
-			<h2 align="center">风险管理计划添加成功.</h2>		  
-		  	<%}
-			  else{%>
-			<h2 align="center">风险管理计划添加失败.</h2>
-			<%} %>
+		    
+		    
+		    
 		  </div>
 		</div>
 	</div>
 	
-</body>
 </body>
 <script type="text/javascript" src="<%=path%>/js/jquery.min.js"></script>
 <script type="text/javascript" src="<%=path%>/js/jquery.easing.min.js"></script>
@@ -60,5 +60,8 @@
       speed: 200
     });
   });
+</script>
+<script type="text/javascript">
+
 </script>
 </html>

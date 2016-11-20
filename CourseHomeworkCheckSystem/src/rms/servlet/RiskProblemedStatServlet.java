@@ -1,6 +1,7 @@
 package rms.servlet;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -11,24 +12,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import newproject.RAService;
-import newproject.model.RA;
-import newproject.service.impl.RAServiceImpl;
-import rms.servlet.business.RAListBean;
+import newproject.StatService;
+import newproject.model.RiskCondition;
+import newproject.service.impl.StatServiceImpl;
+import rms.common.DateFormatter;
+import rms.servlet.business.RiskConditionBean;
 
 /**
- * Servlet implementation class RAViewServlet
+ * Servlet implementation class RiskProblemedStatServlet
  */
-@WebServlet("/RAViewServlet")
-public class RAViewServlet extends HttpServlet {
+@WebServlet("/RiskProblemedStatServlet")
+public class RiskProblemedStatServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-	private RAService raService = new RAServiceImpl();
+
+	private StatService statService = new StatServiceImpl();
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RAViewServlet() {
+    public RiskProblemedStatServlet() {
         super();
     }
 
@@ -48,13 +50,22 @@ public class RAViewServlet extends HttpServlet {
 				response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
 			}
 			else{
-				List<RA> raList = raService.retrieveRA(userId);
-				RAListBean raListBean = new RAListBean();
-				raListBean.setRaList(raList);
-				request.setAttribute("raList", raListBean);
+				String startDateString = request.getParameter("startDate");
+				String endDateString = request.getParameter("endDate");
+				Calendar startDate = DateFormatter.stringToCalendar("yyyy-MM-dd", startDateString); 
+				Calendar endDate = DateFormatter.stringToCalendar("yyyy-MM-dd", endDateString);
+				
+				List<RiskCondition> riskList = statService.retrieveProblemTransformedRisks(startDate, endDate);
+				
+				RiskConditionBean problemedRisks = new RiskConditionBean();
+				problemedRisks.setRiskList(riskList);
+				
+				request.setAttribute("startDate", startDateString);
+				request.setAttribute("endDate", endDateString);
+				request.setAttribute("problemedRisks", problemedRisks);
 				
 				ServletContext context = getServletContext();
-				context.getRequestDispatcher("/jsp/qualityManager/raView.jsp").forward(request, response);
+				context.getRequestDispatcher("/jsp/qualityManager/riskStatTwo.jsp").forward(request, response);
 			}
 		}
 	}

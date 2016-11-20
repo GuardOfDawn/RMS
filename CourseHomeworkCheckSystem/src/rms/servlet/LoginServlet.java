@@ -69,7 +69,9 @@ public class LoginServlet extends HttpServlet {
 				}
 
 				// create a session to show that we are logged in
-				boolean loginRes  = userService.login(loginValue, request.getParameter("password"));
+				String password = request.getParameter("password");
+				boolean loginRes  = userService.login(loginValue, password);
+//				loginRes = true;
 				if(loginRes){
 					session = request.getSession(true);
 					session.setMaxInactiveInterval(5*60);

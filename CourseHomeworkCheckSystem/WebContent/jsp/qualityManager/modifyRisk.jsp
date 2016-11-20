@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@page import="newproject.model.RiskItem"%>
-    <%@page import="rms.common.Possibility"%>
-    <%@page import="rms.common.EffectLevel"%>
-    <%@page import="rms.common.RiskState"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -18,7 +15,10 @@
 	  	<header>
 	      <nav>
 	        <ul class="lavaLampWithImage" id="lava_menu">
-          	  <li><a>您好，<%=session.getAttribute("userTypeInChinese")%>,<%=session.getAttribute("userid")%></a></li>
+	          <li class="current"><a href="<%=path%>/RiskViewServlet">风险管理</a></li>
+          	  <li><a href="<%=path%>/RAViewServlet">风险管理计划</a></li>
+          	  <li><a href="<%=path%>/jsp/qualityManager/riskStat.jsp">风险状况统计</a></li>
+          	  <li><a>您好，<%=session.getAttribute("userTypeInChinese")%>,<%=session.getAttribute("userId")%></a></li>
 	          <li><a href="<%=path%>/LogoutServlet">登出</a></li>
 	        </ul>
 	      </nav>
@@ -29,8 +29,6 @@
 	  	      <ul>
 			    <br></br>
 			    <li><a href="<%=path%>/RiskViewServlet">查看风险</a></li>
-			    <br></br>
-			    <li><a href="<%=path%>/RiskFollowedViewServlet">跟踪的风险</a></li>
 				<br></br>
 				<li><a href="<%=path%>/jsp/qualityManager/addRisk.jsp">添加风险</a></li>
 	 	      </ul>

@@ -43,6 +43,7 @@ public class RASelectProjectServlet extends HttpServlet {
 		else{
 			String userId = String.valueOf(session.getAttribute("userId"));
 			if(userId.equals("null")){
+				session.invalidate();
 				session = null;
 				response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
 			}
@@ -53,7 +54,7 @@ public class RASelectProjectServlet extends HttpServlet {
 				request.setAttribute("projectList", projectBean);
 				
 				ServletContext context = getServletContext();
-				context.getRequestDispatcher("/jsp/qualityManager/raAddProject.jsp").forward(request, response);
+				context.getRequestDispatcher("/jsp/qualityManager/raSelectProject.jsp").forward(request, response);
 			}
 		}
 	}

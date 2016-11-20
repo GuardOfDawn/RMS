@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService{
 		if(user == null)
 			return false;
 		String pw = user.getPassword();
-		if(pw == null || pw.equals(password))
+		if(pw == null || !pw.equals(password))
 			return false;
 		else
 			return true;

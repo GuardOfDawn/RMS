@@ -52,8 +52,10 @@ public class UserDaoImpl implements UserDao{
 			return null;
 		int row = 0;
 		try {
+			resultSet.next();
 			row = resultSet.getRow();
 		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		if(row == 0)
 			return null;

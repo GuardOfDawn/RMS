@@ -50,29 +50,21 @@ public class ProjectDaoImpl implements ProjectDao{
 		List<Project> list = new ArrayList<Project>();
 		if(resultSet == null)
 			return list;
-		int row = 0;
 		try {
-			row = resultSet.getRow();
-		} catch (SQLException e) {
-			return list;
-		}
-		while(row > 0){
-			try {
-				resultSet.next();
-			} catch (SQLException e) {
-				row--;
-				continue;
+			while(resultSet.next()){
+				Project p = new Project();
+				try {
+					p.setProjectId(resultSet.getString(1));
+					p.setProjectName(resultSet.getString(2));
+					p.setDescription(resultSet.getString(3));
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				list.add(p);
 			}
-			Project p = new Project();
-			try {
-				p.setProjectId(resultSet.getString(1));
-				p.setProjectName(resultSet.getString(2));
-				p.setDescription(resultSet.getString(3));
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			list.add(p);
-			row--;
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 		try {
 			resultSet.close();

@@ -12,7 +12,7 @@
 	<div id="main" align="center">
 	    <div id="site_middle">
 			<h2>欢迎来到风险管理系统</h2>
-			<form method='POST' action='../LoginServlet'>
+			<form method='POST' action='<%=path%>/LoginServlet'>
 				<div class="form_settings">
 					<p>用户名&nbsp;&nbsp;<input type="text" name="userId" value="" /></p>
             		<p>用户密码&nbsp;&nbsp;<input type="password" name="password" value="" /></p>

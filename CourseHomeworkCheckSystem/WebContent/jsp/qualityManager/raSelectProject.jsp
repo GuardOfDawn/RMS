@@ -29,9 +29,9 @@
 	      <nav>
 	        <ul class="lavaLampWithImage" id="lava_menu">
           	  <li><a href="<%=path%>/RiskViewServlet">风险管理</a></li>
-          	  <li class="current"><a href="<%=path%>/Dessert/storevisitall">风险管理计划</a></li>
-          	  <li><a href="<%=path%>/Dessert/storevisitall">风险状况统计</a></li>
-          	  <li><a>您好，<%=session.getAttribute("userTypeInChinese")%>,<%=session.getAttribute("userid")%></a></li>
+          	  <li class="current"><a href="<%=path%>/RAViewServlet">风险管理计划</a></li>
+          	  <li><a href="<%=path%>/jsp/qualityManager/riskStat.jsp">风险状况统计</a></li>
+          	  <li><a>您好，<%=session.getAttribute("userTypeInChinese")%>,<%=session.getAttribute("userId")%></a></li>
 	          <li><a href="<%=path%>/LogoutServlet">登出</a></li>
 	        </ul>
 	      </nav>
@@ -60,12 +60,12 @@
 				</div>
 			</div>
 			
-			<form action="<%=path%>/RAAddRiskServlet" method="post">
+			<form method="post">
 	          <div class="form_settings" style="margin-top:100px;margin-left:100px">
 	          	<p>
 	          	<span>选择项目</span>
 	            <select id="selectProject" name="selectProject" size="5" onchange="projectSelected(this)" style="margin-top:5px;" >
-	              <%projectList = new ProjectListBean();
+	              <%projectList = (ProjectListBean)request.getAttribute("projectList");
 	                for(int i=0;i<projectList.getSize();i++){
 						pageContext.setAttribute("project",projectList.getProject(i));
 	          	  %>
@@ -78,7 +78,7 @@
               	<p><span>项目编号</span><input type="text" id="projectId" name="projectId" disabled="disabled" value='' /></p>
               	<p><span>项目标题</span><input type="text" id="projectName" name="projectName" disabled="disabled"  value='' /></p>
 	            <p><span>项目内容</span><textarea id="description" rows="6" cols="50" name="description" disabled="disabled" ></textarea></p>
-				<p style="padding-top: 15px"><span>&nbsp;</span><input class="submit" type="submit" name="ensure" value="下一步"/></p>
+				<p style="padding-top: 15px"><span>&nbsp;</span><input class="submit" type="button" name="ensure" value="下一步" onclick="nextStep()"/></p>
 			  </div>
 			</form>
 		    
@@ -105,6 +105,15 @@ function projectSelected(obj){
 	document.getElementById('projectId').value= parts[0];
 	document.getElementById('projectName').value= parts[1];
 	document.getElementById('description').value= parts[2];
+}
+function nextStep(){
+	var projectId = document.getElementById('projectId').value;
+	if(projectId==""){
+		alert("请选择一个项目再进行下一步");
+	}
+	else{
+		window.location.href='<%=path%>/RAAddRiskServlet?project='+projectId;
+	}
 }
 </script>
 <script type="text/javascript">

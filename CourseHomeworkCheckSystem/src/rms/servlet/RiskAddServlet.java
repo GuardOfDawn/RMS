@@ -42,6 +42,7 @@ public class RiskAddServlet extends HttpServlet {
 		else{
 			String userId = String.valueOf(session.getAttribute("userId"));
 			if(userId.equals("null")){
+				session.invalidate();
 				session = null;
 				response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
 			}

@@ -22,9 +22,9 @@
 	      <nav>
 	        <ul class="lavaLampWithImage" id="lava_menu">
           	  <li class="current"><a href="<%=path%>/RiskViewServlet">风险管理</a></li>
-          	  <li><a href="<%=path%>/Dessert/storevisitall">风险管理计划</a></li>
-          	  <li><a href="<%=path%>/Dessert/storevisitall">风险状况统计</a></li>
-          	  <li><a>您好，<%=session.getAttribute("userTypeInChinese")%>,<%=session.getAttribute("userid")%></a></li>
+          	  <li><a href="<%=path%>/RAViewServlet">风险管理计划</a></li>
+          	  <li><a href="<%=path%>/jsp/qualityManager/riskStat.jsp">风险状况统计</a></li>
+          	  <li><a>您好，<%=session.getAttribute("userTypeInChinese")%>,<%=session.getAttribute("userId")%></a></li>
 	          <li><a href="<%=path%>/LogoutServlet">登出</a></li>
 	        </ul>
 	      </nav>
@@ -34,7 +34,7 @@
       		<div class="sidebar">
 	  	      <ul>
 			    <br></br>
-			    <li><a href="<%=path%>/RiskViewServlet">查看所有风险</a></li>
+			    <li><a href="<%=path%>/RiskViewServlet">查看风险</a></li>
 				<br></br>
 				<li><a href="<%=path%>/jsp/qualityManager/addRisk.jsp">添加风险</a></li>
 	 	      </ul>

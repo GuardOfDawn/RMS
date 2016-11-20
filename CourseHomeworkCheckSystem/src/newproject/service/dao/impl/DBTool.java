@@ -1,12 +1,14 @@
 package newproject.service.dao.impl;
 
-import newproject.service.dao.DaoHelper;
-import newproject.service.dao.DaoHelperImpl;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import com.sun.istack.internal.logging.Logger;
+import newproject.service.dao.DaoHelper;
+import newproject.service.dao.DaoHelperImpl;
 
 public class DBTool {
 	private DaoHelper daoHelper;
@@ -60,13 +62,13 @@ public class DBTool {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			this.daoHelper.closeConnection(connection);
+//			this.daoHelper.closeConnection(connection);
 		}
-		try {
-			statement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			statement.close();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
 		return resultSet;
 	}
 	public String convert(Calendar time){
