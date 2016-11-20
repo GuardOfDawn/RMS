@@ -19,5 +19,12 @@ public interface StateItemService {
 	 * @return
 	 */
 	public List<StateItem> retrieve(String raId,String riskId);
+	
+	/**
+	 * 查找某个软件开发者需要负责的风险条目
+	 * @param developterId
+	 * @return
+	 */
+	public List<StateItem> retrieveRisks(String developterId);
 
 }
