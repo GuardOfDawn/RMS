@@ -41,8 +41,7 @@ public class StateItemServiceImpl implements StateItemService{
 
 	@Override
 	public List<StateItem> retrieveRisks(String developterId) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.stateItemDao.retrieve(developterId);
 	}
 
 }

@@ -13,4 +13,6 @@ public interface StateItemDao {
 	public boolean modify(StateItem stateItem);
 	
 	public List<StateItem> retrieve(String raId, String riskId);
+	
+	public List<StateItem> retrieve(String developperID);
 }
