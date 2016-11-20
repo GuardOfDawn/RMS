@@ -55,38 +55,18 @@ public class RADaoImpl implements RADao{
 		ResultSet resultSet = this.db.executeQuery(sql);
 		if(resultSet == null)
 			return false;
-		
-		int row = 0;
 		List<String> list = new ArrayList<String>();
 		try {
-			row = resultSet.getRow();
-		} catch (SQLException e) {
-			return false;
-		}
-		while(row > 0){
-			try {
-				resultSet.next();
-			} catch (SQLException e) {
-				row--;
-				continue;
-			}
-			try {
+			while(resultSet.next()){
 				String sid = resultSet.getString(1);
 				list.add(sid);
-			} catch (SQLException e) {
-				e.printStackTrace();
 			}
-			row--;
-		}
-		try {
 			resultSet.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
 		}
-		
 		sql = "delete from belongto where raid='"+raid+"';";
 		this.db.executeCUD(sql);
-		
 		for(int i=0;i<list.size();i++){
 			new StateItemDaoImpl().remove(list.get(i));
 		}
@@ -166,27 +146,15 @@ public class RADaoImpl implements RADao{
 		ResultSet resultSet = this.db.executeQuery(sql);
 		if(resultSet == null)
 			return null;
-		int row = 0;
 		try {
-			row = resultSet.getRow();
-		} catch (SQLException e) {
-			return null;
-		}
-		while(row > 0){
-			try {
-				resultSet.next();
-			} catch (SQLException e) {
-				row--;
-				continue;
-			}
-			try {
+			while(resultSet.next()){
 				ra.setRaId(string);
 				ra.setSetter(resultSet.getString(1));
 				ra.setDescription(resultSet.getString(2));
-			} catch (SQLException e) {
-				e.printStackTrace();
 			}
-			row--;
+			resultSet.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return ra;
 	}
@@ -197,25 +165,13 @@ public class RADaoImpl implements RADao{
 		List<String> sids =  new ArrayList<String>();
 		if(resultSet == null)
 			return null;
-		int row = 0;
 		try {
-			row = resultSet.getRow();
-		} catch (SQLException e) {
-			return null;
-		}
-		while(row > 0){
-			try {
-				resultSet.next();
-			} catch (SQLException e) {
-				row--;
-				continue;
-			}
-			try {
+			while(resultSet.next()){
 				sids.add(resultSet.getString(1));
-			} catch (SQLException e) {
-				e.printStackTrace();
 			}
-			row--;
+			resultSet.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return sids;
 	}
@@ -226,25 +182,13 @@ public class RADaoImpl implements RADao{
 		List<String> raids = new ArrayList<String>();
 		if(resultSet == null)
 			return null;
-		int row = 0;
 		try {
-			row = resultSet.getRow();
-		} catch (SQLException e) {
-			return null;
-		}
-		while(row > 0){
-			try {
-				resultSet.next();
-			} catch (SQLException e) {
-				row--;
-				continue;
-			}
-			try {
+			while(resultSet.next()){
 				raids.add(resultSet.getString(1));
-			} catch (SQLException e) {
-				e.printStackTrace();
 			}
-			row--;
+			resultSet.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return raids;
 	}
@@ -255,20 +199,8 @@ public class RADaoImpl implements RADao{
 		ResultSet resultSet = this.db.executeQuery(sql);
 		if(resultSet == null)
 			return item;
-		int row = 0;
 		try {
-			row = resultSet.getRow();
-		} catch (SQLException e) {
-			return item;
-		}
-		while(row > 0){
-			try {
-				resultSet.next();
-			} catch (SQLException e) {
-				row--;
-				continue;
-			}
-			try {
+			while(resultSet.next()){
 				item.setStateId(resultSet.getString(1));
 				item.setRiskId(resultSet.getString(2));
 				item.setDescription(resultSet.getString(3));
@@ -279,10 +211,10 @@ public class RADaoImpl implements RADao{
 				item.setComitter(resultSet.getString(8));
 				item.setFollower(resultSet.getString(9));
 				item.setTime(this.db.convert(resultSet.getString(10)));
-			} catch (SQLException e) {
-				e.printStackTrace();
 			}
-			row--;
+			resultSet.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return item;
 	}

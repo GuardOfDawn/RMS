@@ -53,6 +53,7 @@ public class RiskDaoImpl implements RiskDao{
 			result.setRiskId(resultSet.getString(1));
 			result.setTitle(resultSet.getString(2));
 			result.setDescription(resultSet.getString(3));
+			resultSet.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -74,6 +75,7 @@ public class RiskDaoImpl implements RiskDao{
 				item.setDescription(resultSet.getString(3));
 				list.add(item);
 			}
+			resultSet.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -79,8 +79,8 @@ public class UserDaoImpl implements UserDao{
 				user.setPassword(resultSet.getString(3));
 				user.setRole(Role.valueOf(resultSet.getString(4)));
 				list.add(user);
-				resultSet.close();
 			}
+			resultSet.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

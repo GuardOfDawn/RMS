@@ -87,8 +87,8 @@ public class StateItemDaoImpl implements StateItemDao{
 				item.setFollower(resultSet.getString(9));
 				item.setTime(this.db.convert(resultSet.getString(10)));
 				list.add(item);
-				resultSet.close();
 			}
+			resultSet.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -105,23 +105,19 @@ public class StateItemDaoImpl implements StateItemDao{
 		try {
 			while(resultSet.next()){
 				StateItem item = new StateItem();
-				try {
-					item.setStateId(resultSet.getString(1));
-					item.setRiskId(resultSet.getString(2));
-					item.setDescription(resultSet.getString(3));
-					item.setState(RiskState.valueOf(resultSet.getString(4)));
-					item.setPossibility(resultSet.getString(5));
-					item.setEffectlevel(resultSet.getString(6));
-					item.setThreshold(resultSet.getString(7));
-					item.setComitter(resultSet.getString(8));
-					item.setFollower(resultSet.getString(9));
-					item.setTime(this.db.convert(resultSet.getString(10)));
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+				item.setStateId(resultSet.getString(1));
+				item.setRiskId(resultSet.getString(2));
+				item.setDescription(resultSet.getString(3));
+				item.setState(RiskState.valueOf(resultSet.getString(4)));
+				item.setPossibility(resultSet.getString(5));
+				item.setEffectlevel(resultSet.getString(6));
+				item.setThreshold(resultSet.getString(7));
+				item.setComitter(resultSet.getString(8));
+				item.setFollower(resultSet.getString(9));
+				item.setTime(this.db.convert(resultSet.getString(10)));
 				list.add(item);
-				resultSet.close();
 			}
+			resultSet.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

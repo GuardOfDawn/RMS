@@ -7,16 +7,10 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import rms.common.CountLimit;
-import rms.common.Role;
-import newproject.model.Project;
 import newproject.model.RiskCondition;
 import newproject.model.RiskItem;
-import newproject.model.User;
-import newproject.service.dao.RiskDao;
 import newproject.service.dao.StatDao;
 
 public class StatDaoImpl implements StatDao{
@@ -35,21 +29,9 @@ public class StatDaoImpl implements StatDao{
 		if(resultSet == null)
 			return list;
 		
-		int row = 0;
 		HashMap<String,Integer> map = new HashMap<String,Integer>();
 		try {
-			row = resultSet.getRow();
-		} catch (SQLException e) {
-			return list;
-		}
-		while(row > 0){
-			try {
-				resultSet.next();
-			} catch (SQLException e) {
-				row--;
-				continue;
-			}
-			try {
+			while(resultSet.next()){
 				String rid = resultSet.getString(1);
 				Calendar time = db.convert(resultSet.getString(2));
 				if((time.compareTo(start)>=0)&&(time.compareTo(end)<=0)){
@@ -60,17 +42,11 @@ public class StatDaoImpl implements StatDao{
 						map.put(rid,1);
 					}
 				}
-			} catch (SQLException e) {
-				e.printStackTrace();
 			}
-			row--;
-		}
-		try {
 			resultSet.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
 		}
-		
 		RiskDaoImpl temp = new RiskDaoImpl();
 		Iterator<String> iter = map.keySet().iterator();
 		int count = 0;
@@ -96,22 +72,9 @@ public class StatDaoImpl implements StatDao{
 		List<RiskCondition> list = new ArrayList<RiskCondition>();
 		if(resultSet == null)
 			return list;
-		
-		int row = 0;
 		HashMap<String,Integer> map = new HashMap<String,Integer>();
 		try {
-			row = resultSet.getRow();
-		} catch (SQLException e) {
-			return list;
-		}
-		while(row > 0){
-			try {
-				resultSet.next();
-			} catch (SQLException e) {
-				row--;
-				continue;
-			}
-			try {
+			while(resultSet.next()){
 				String rid = resultSet.getString(1);
 				Calendar time = db.convert(resultSet.getString(2));
 				if((time.compareTo(start)>=0)&&(time.compareTo(end)<=0)){
@@ -122,17 +85,11 @@ public class StatDaoImpl implements StatDao{
 						map.put(rid,1);
 					}
 				}
-			} catch (SQLException e) {
-				e.printStackTrace();
 			}
-			row--;
-		}
-		try {
 			resultSet.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
 		}
-		
 		RiskDaoImpl temp = new RiskDaoImpl();
 		Iterator<String> iter = map.keySet().iterator();
 		int count = 0;
@@ -147,7 +104,6 @@ public class StatDaoImpl implements StatDao{
 			if((++count)>=CountLimit.COUNT)
 				break;
 		}
-		
 		return list;
 	}
 }

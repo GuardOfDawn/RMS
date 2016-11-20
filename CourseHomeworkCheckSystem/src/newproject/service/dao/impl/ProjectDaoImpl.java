@@ -79,9 +79,9 @@ public class ProjectDaoImpl implements ProjectDao{
 				user.setUserName(resultSet.getString(2));
 				user.setPassword(null);
 				user.setRole(Role.valueOf(resultSet.getString(3)));
-				resultSet.close();
 				list.add(user);
 			}
+			resultSet.close();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
