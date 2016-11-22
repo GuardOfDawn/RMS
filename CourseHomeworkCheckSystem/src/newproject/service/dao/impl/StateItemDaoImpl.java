@@ -23,7 +23,10 @@ public class StateItemDaoImpl implements StateItemDao{
 				+"','"+stateItem.getEffectlevel().toString()+"','"+stateItem.getThreshold()
 				+"','"+stateItem.getComitter()+"','"+stateItem.getFollower()+"','"
 				+this.db.convert(stateItem.getTime())+"');";
-		boolean flag = this.db.executeCUD(sql);
+		this.db.executeCUD(sql);
+		String sql2 = "insert into belongto value('"+stateItem.getStateId()+"','"+stateItem.getRaId()+"','"
+						+stateItem.getProjectId()+"');";
+		this.db.executeCUD(sql2);
 		return true;
 	}
 
@@ -99,7 +102,7 @@ public class StateItemDaoImpl implements StateItemDao{
 
 	@Override
 	public List<StateItem> retrieve(String developperID) {
-		String sql = "select * from riskstate where follower='"+developperID+"');";
+		String sql = "select * from riskstate,belongto where follower like '%"+developperID+"%' and riskstate.sid = belongto.sid;";
 		
 		List<StateItem> list = new ArrayList<StateItem>();
 		ResultSet resultSet = this.db.executeQuery(sql);
@@ -118,6 +121,8 @@ public class StateItemDaoImpl implements StateItemDao{
 				item.setComitter(resultSet.getString(8));
 				item.setFollower(resultSet.getString(9));
 				item.setTime(this.db.convert(resultSet.getString(10)));
+				item.setRaId(resultSet.getString(12));
+				item.setProjectId(resultSet.getString(13));
 				list.add(item);
 			}
 			resultSet.close();

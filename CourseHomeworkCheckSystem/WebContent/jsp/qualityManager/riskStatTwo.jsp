@@ -66,7 +66,7 @@
 				DefaultPieDataset dpd = new DefaultPieDataset();
 			    
 				for(int i=0;i<riskList.getSize();i++){
-					dpd.setValue(riskList.getRiskCondition(i).getRisk().getRiskId(), riskList.getRiskCondition(i).getRecognizedCount());
+					dpd.setValue(riskList.getRiskCondition(i).getRisk().getRiskId(), riskList.getRiskCondition(i).getProblemTransformedCount());
 				}
 			    
 			    JFreeChart chart = ChartFactory.createPieChart("风险演变成问题的比例图",dpd, true, false, false);

@@ -18,6 +18,8 @@ public class StateItem implements Serializable{
 	
 	private String projectId;
 	
+	private String raId;
+	
 	private String description;
 	
 	private RiskState state;
@@ -48,6 +50,14 @@ public class StateItem implements Serializable{
 
 	public void setRiskId(String riskId) {
 		this.riskId = riskId;
+	}
+
+	public String getRaId() {
+		return raId;
+	}
+
+	public void setRaId(String raId) {
+		this.raId = raId;
 	}
 
 	public RiskState getState() {

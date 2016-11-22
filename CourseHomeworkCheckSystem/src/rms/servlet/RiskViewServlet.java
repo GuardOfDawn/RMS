@@ -76,6 +76,7 @@ public class RiskViewServlet extends HttpServlet {
 					int count = 0;
 					boolean exist = false;
 					String[] riskIds = new String[riskList.size()];
+					String[] raIds = new String[riskList.size()];
 					int[][] states = new int[riskList.size()][4];
 					for(int i=0;i<riskList.size();i++){
 						for(int j=0;j<4;j++){
@@ -84,21 +85,22 @@ public class RiskViewServlet extends HttpServlet {
 					}
 					for(int i=0;i<riskList.size();i++){
 						String id = riskList.get(i).getRiskId();
+						String raId = riskList.get(i).getRaId();
 						for(int j=0;j<count;j++){
-							if(id.equals(riskIds[j])){
+							if(id.equals(riskIds[j])&&raId.equals(raIds[j])){
 								exist = true;
 								switch(riskList.get(i).getState()){
 								case UnRemoved:
-									states[count-1][0] = j;
+									states[j][0] = i;
 									break;
 								case Removed:
-									states[count-1][1] = j;
+									states[j][1] = i;
 									break;
 								case Problem:
-									states[count-1][2] = j;
+									states[j][2] = i;
 									break;
 								case ProblemSolved:
-									states[count-1][3] = j;
+									states[j][3] = i;
 									break;
 								default:
 									break;
@@ -107,34 +109,53 @@ public class RiskViewServlet extends HttpServlet {
 						}
 						if(!exist){
 							riskIds[count] = id;
+							raIds[count] = raId;
+							switch(riskList.get(i).getState()){
+							case UnRemoved:
+								states[count][0] = i;
+								break;
+							case Removed:
+								states[count][1] = i;
+								break;
+							case Problem:
+								states[count][2] = i;
+								break;
+							case ProblemSolved:
+								states[count][3] = i;
+								break;
+							default:
+								break;
+							}
 							count++;
 						}
+						exist = false;
 					}
 					
 					List<FullRisk> fullRiskList = new ArrayList<FullRisk>();
 					for(int i=0;i<count;i++){
-						FullRisk fullRisk = new FullRisk();
-						StateItem item = riskList.get(states[i][0]);
-						fullRisk.setRiskId(riskIds[i]);
-						fullRisk.setProjectId(item.getProjectId());
-						fullRisk.setDescription(item.getDescription());
-						fullRisk.setPossibility(item.getPossibility());
-						fullRisk.setEffectlevel(item.getEffectlevel());
-						fullRisk.setThreshold(item.getThreshold());
-						List<RiskStateItem> stateList = new ArrayList<RiskStateItem>();
-						for(int j=0;j<4;j++){
-							if(states[i][j]>-1){
-								RiskStateItem stateItem = new RiskStateItem();
-								stateItem.setComitter(riskList.get(states[i][0]).getComitter());
-								stateItem.setTime(DateFormatter.calendarToString("yyyy-MM-dd HH:mm:ss",riskList.get(states[i][0]).getTime()));
-								stateItem.setState(riskList.get(states[i][0]).getState());
-								stateItem.setDescription(riskList.get(states[i][0]).getDescription());
-								stateList.add(stateItem);
-								fullRisk.setState(riskList.get(states[i][0]).getState());
+							FullRisk fullRisk = new FullRisk();
+							StateItem item = riskList.get(states[i][0]);
+							fullRisk.setRiskId(riskIds[i]);
+							fullRisk.setProjectId(item.getProjectId());
+							fullRisk.setRaId(item.getRaId());
+							fullRisk.setDescription(item.getDescription());
+							fullRisk.setPossibility(item.getPossibility());
+							fullRisk.setEffectlevel(item.getEffectlevel());
+							fullRisk.setThreshold(item.getThreshold());
+							List<RiskStateItem> stateList = new ArrayList<RiskStateItem>();
+							for(int j=0;j<4;j++){
+								if(states[i][j]>-1){
+									RiskStateItem stateItem = new RiskStateItem();
+									stateItem.setComitter(riskList.get(states[i][j]).getComitter());
+									stateItem.setTime(DateFormatter.calendarToString("yyyy-MM-dd HH:mm:ss",riskList.get(states[i][j]).getTime()));
+									stateItem.setState(riskList.get(states[i][j]).getState());
+									stateItem.setDescription(riskList.get(states[i][j]).getDescription());
+									stateList.add(stateItem);
+									fullRisk.setState(riskList.get(states[i][j]).getState());
+								}
 							}
-						}
-						fullRisk.setRiskStateList(stateList);
-						fullRiskList.add(fullRisk);
+							fullRisk.setRiskStateList(stateList);
+							fullRiskList.add(fullRisk);
 					}
 					
 					FullRiskListBean fullRiskBean = new FullRiskListBean();

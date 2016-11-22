@@ -53,7 +53,7 @@
 		  	  <td><jsp:getProperty name="riskItem" property="state" /></td>
 		      <td>
 		      	<input class="submit" type="button" name="modifyRisk" value="添加状态"
-					 onclick="addRiskStateRow('<jsp:getProperty name="riskItem" property="riskId" />')"/>
+					 onclick="followRiskState('<jsp:getProperty name="riskItem" property="riskId" />;<jsp:getProperty name="riskItem" property="raId" />')"/>
 		      </td>
 		    </tr>
 		  	<%} %>
@@ -88,8 +88,9 @@
   });
 </script>
 <script type="text/javascript">
-	function addRiskStateRow(riskId){
-		window.location.href='<%=path%>/jsp/softwareEngineer/riskDetailForSE.jsp?riskIdCheck='+riskId;
-	}
+function followRiskState(riskInfo){
+	var parts = riskInfo.split(";");
+	window.location.href='<%=path%>/jsp/softwareEngineer/riskDetailForSE.jsp?riskIdCheck='+parts[0]+'&riskRaId='+parts[1];
+}
 </script>
 </html>

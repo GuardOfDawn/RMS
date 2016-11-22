@@ -431,11 +431,12 @@ function addSuggestRisks(){
 			desString = desString+riskDesList[i];
 			if(i!=length-1){
 				idString = idString+";";
+				titleString = titleString+";";
 				desString = desString+";";
 			}
 		}
 		document.getElementById('importIdList').value=idString;
-		document.getElementById('importIdList').value=titleString;
+		document.getElementById('importTitleList').value=titleString;
 		document.getElementById('importDesList').value=desString;
 		document.getElementById('lightForImport').style.display='block';
 	}
@@ -510,6 +511,19 @@ function importRiskItem(){
     var titleString = document.getElementById('importTitleList').value;
 	var desString = document.getElementById('importDesList').value;
 	if(idString==""){
+		document.getElementById('importIdList').value="";
+		document.getElementById('importTitleList').value="";
+		document.getElementById('importDesList').value="";
+		document.getElementById('riskIdImport').value="";
+		document.getElementById('riskTitleImport').value="";
+		var options = document.getElementById('possibilityImport').options;
+		options[0].selected = true;
+		options = document.getElementById('effectLevelImport').options;
+		options[0].selected = true;
+		options = document.getElementById('riskStateImport').options;
+		options[0].selected = true;
+		document.getElementById('thresholdImport').value="";
+		document.getElementById('descriptionImport').value="";
 		document.getElementById('lightForImport').style.display='none';
 		alert("风险条目导入完成");
 	}
@@ -539,6 +553,7 @@ function importRiskItem(){
 			}
 		}
 		document.getElementById('importIdList').value=idString;
+		document.getElementById('importTitleList').value=idString;
 		document.getElementById('importDesList').value=desString;
 	}
 }

@@ -90,20 +90,19 @@ public class RADaoImpl implements RADao{
 	@Override
 	public List<RA> findById(String userId) {
 		List<RA> list = new ArrayList<RA>();
-		String sql = "select raid,description from ra where setter='"+userId+"';";
+		String sql = "select distinct ra.raid,description,belongto.pid from ra,belongto where ra.raid=belongto.raid and setter='"+userId+"';";
 		ResultSet resultSet = this.db.executeQuery(sql);
 		if(resultSet == null)
 			return null;
-		RA ra = new RA();
 		try {
-			resultSet.next();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		try {
-			ra.setRaId(resultSet.getString(1));
-			ra.setDescription(resultSet.getString(2));
-			ra.setSetter(userId);
+			while(resultSet.next()){
+				RA ra = new RA();
+				ra.setRaId(resultSet.getString(1));
+				ra.setDescription(resultSet.getString(2));
+				ra.setProjectId(resultSet.getString(3));
+				ra.setSetter(userId);
+				list.add(ra);
+			}
 			resultSet.close();
 			DBTool.connectionList.get(0).close();
 			DBTool.connectionList.remove(0);
@@ -203,7 +202,7 @@ public class RADaoImpl implements RADao{
 	}
 
 	private StateItem retrieve(String sid){
-		String sql = "select * from riskstate where sid='"+sid+"');";
+		String sql = "select * from riskstate where sid='"+sid+"';";
 		StateItem item = new StateItem();
 		ResultSet resultSet = this.db.executeQuery(sql);
 		if(resultSet == null)

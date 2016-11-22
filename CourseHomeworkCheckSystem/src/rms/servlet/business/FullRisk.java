@@ -16,6 +16,8 @@ public class FullRisk implements Serializable{
 	
 	private String projectId;
 	
+	private String raId;
+	
 	private String description;
 	
 	private RiskState state;
@@ -90,6 +92,14 @@ public class FullRisk implements Serializable{
 
 	public void setRiskStateList(List<RiskStateItem> riskStateList) {
 		this.riskStateList = riskStateList;
+	}
+
+	public String getRaId() {
+		return raId;
+	}
+
+	public void setRaId(String raId) {
+		this.raId = raId;
 	}
 	
 }

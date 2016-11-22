@@ -59,11 +59,13 @@ public class RiskStateAddServlet extends HttpServlet {
 				StateItem item = new StateItem();
 				RiskStateItem stateItem = new RiskStateItem();
 				for(int i=0;i<fullRiskBean.getSize();i++){
-					if(fullRiskBean.getFullRisk(i).getRiskId().equals(parts[0])){
+					if(fullRiskBean.getFullRisk(i).getRiskId().equals(parts[0])&&fullRiskBean.getFullRisk(i).getRaId().equals(parts[3])){
 						item.setStateId(IdProducer.produceStateId());
 						item.setRiskId(parts[0]);
 						item.setComitter(userId);
+						item.setFollower(userId);
 						item.setProjectId(fullRiskBean.getFullRisk(i).getProjectId());
+						item.setRaId(parts[3]);
 						item.setDescription(parts[2]);
 						item.setState(RiskState.valueOf(parts[1]));
 						item.setPossibility(fullRiskBean.getFullRisk(i).getPossibility());
@@ -80,11 +82,14 @@ public class RiskStateAddServlet extends HttpServlet {
 				}
 				
 				boolean res = stateItemService.addStateItem(item);
+				request.setAttribute("riskIdCheck", parts[0]);
+				request.setAttribute("riskRaId", parts[3]);
 				request.setAttribute("res", res);
 				if(res){
 					for(int i=0;i<fullRiskBean.getSize();i++){
-						if(fullRiskBean.getFullRisk(i).getRiskId().equals(parts[0])){
+						if(fullRiskBean.getFullRisk(i).getRiskId().equals(parts[0])&&fullRiskBean.getFullRisk(i).getRaId().equals(parts[3])){
 							fullRiskBean.getFullRisk(i).getRiskStateList().add(stateItem);
+							fullRiskBean.getFullRisk(i).setState(stateItem.getState());
 							break;
 						}
 					}

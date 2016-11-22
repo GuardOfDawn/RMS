@@ -3,6 +3,7 @@
     <%@page import="rms.common.Possibility"%>
     <%@page import="rms.common.EffectLevel"%>
     <%@page import="rms.common.RiskState"%>
+    <%@page import="rms.servlet.business.FullRisk"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -26,7 +27,7 @@
 	  	<header>
 	      <nav>
 	        <ul class="lavaLampWithImage" id="lava_menu">
-          	  <li><a>您好，<%=session.getAttribute("userTypeInChinese")%>,<%=session.getAttribute("userid")%></a></li>
+          	  <li><a>您好，<%=session.getAttribute("userTypeInChinese")%>,<%=session.getAttribute("userId")%></a></li>
 	          <li><a href="<%=path%>/LogoutServlet">登出</a></li>
 	        </ul>
 	      </nav>
@@ -42,9 +43,18 @@
    	  	  </div>
    	  	<%
    	  		String riskId = request.getParameter("riskIdCheck");
+	  		String raId = request.getParameter("riskRaId");
+   	  		if(riskId==null||riskId.equals("null")){
+   	  			riskId = String.valueOf(request.getAttribute("riskIdCheck"));
+   	  		}
+   	  		if(raId==null||raId.equals("null")){
+   	  			raId = String.valueOf(request.getAttribute("riskRaId"));
+   	  		}
+   			riskItem = null;
    	 		for(int i=0;i<fullRiskList.getSize();i++){
-   	 			if(fullRiskList.getFullRisk(i).getRiskId().equals(riskId)){
-	    			pageContext.setAttribute("riskItem",fullRiskList.getFullRisk(i));
+   	 			if(fullRiskList.getFullRisk(i).getRiskId().equals(riskId)&&fullRiskList.getFullRisk(i).getRaId().equals(raId)){
+   	 				riskItem = fullRiskList.getFullRisk(i);
+   	 	    		pageContext.setAttribute("riskItem",riskItem);
 	    			break;
    	 			}
    	 		}
@@ -55,6 +65,7 @@
 	   	  	<div class="form_settings" style="margin-left:150px">
 	  		  <p><span>风险编号</span><input id="riskId" type="text" name="riskId" readonly="readonly" value="<jsp:getProperty name="riskItem" property="riskId" />" /></p>
 	  		  <p><span>对应项目编号</span><input type="text" name="projectId" readonly="readonly" value="<jsp:getProperty name="riskItem" property="projectId" />" /></p>
+	  		  <p><span>对应RA</span><input id="raId" type="text" name="raId" readonly="readonly" value="<jsp:getProperty name="riskItem" property="raId" />" /></p>
 	  		    <%
               	if(riskItem.getPossibility().equals("High")){ %>
               <p><span>可能性</span><input type="text" name="riskId" readonly="readonly" value="高" /></p>
@@ -94,7 +105,7 @@
 			 
 			 <div class="form_settings" style="margin-left:20px">
 			 	<p><span>风险跟踪记录</span></p>
-			 	<input class="submit" type="button" value="添加状态记录" onclick="addStateItem()"/>
+			 	<input class="submit" type="button" value="添加状态记录" style="width:150px" onclick="addStateItem()"/>
 				<br>
 			 	<%	
 				int number = 1;
@@ -118,6 +129,10 @@
 							<td><jsp:getProperty name="riskStateItem" property="comitter" /></td>
 						</tr>
 						<tr>
+							<td>风险状态:</td>
+							<td><jsp:getProperty name="riskStateItem" property="state" /></td>
+						</tr>
+						<tr>
 							<td>风险状态内容:</td>
 							<td><jsp:getProperty name="riskStateItem" property="description" /></td>
 						</tr>
@@ -127,10 +142,10 @@
 				<%}%>
 				<%String addRes = String.valueOf(request.getAttribute("res"));
 				  if(addRes!=null&&addRes.equals("true")){ %>
-				  <p><span>风险状态添加成功</span></p>
+				  <p><span style="width:300px">风险状态添加成功</span></p>
 				<%}
 				  else if(addRes!=null&&addRes.equals("false")){%>
-				  <p><span>风险状态添加失败</span></p>
+				  <p><span style="width:300px">风险状态添加失败</span></p>
 				<%} %>
 			 </div>
 			 
@@ -154,7 +169,7 @@
 	          </div>
 	          <div class="form_settings">
 	            <input class="submit" type="button" value="取消" onclick="closeAddItem()"/>
-	            <input class="submit" type="button" name="addItemEnsure" value="确认添加" onclick="addStateItem()"/>
+	            <input class="submit" type="button" name="addItemEnsure" value="确认添加" onclick="ensureAddStateItem()"/>
 	          </div>
 			</div>
 			
@@ -185,13 +200,15 @@ function closeAddState(){
 	document.getElementById('descriptionAdd').value="";
 	document.getElementById('lightForAdd').style.display='none';
 }
-function addStateItem(){
+function ensureAddStateItem(){
 	var addedStateString = "";
 	addedStateString = addedStateString+document.getElementById('riskId').value;
 	addedStateString = addedStateString+"\",\"";
 	addedStateString = addedStateString+document.getElementById('riskStateAdd').value;
 	addedStateString = addedStateString+"\",\"";
 	addedStateString = addedStateString+document.getElementById('descriptionAdd').value;
+	addedStateString = addedStateString+"\",\"";
+	addedStateString = addedStateString+document.getElementById('raId').value;
 	window.location.href='<%=path%>/RiskStateAddServlet?addedStateString='+addedStateString;
 }
 </script>
